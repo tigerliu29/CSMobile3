@@ -78,8 +78,8 @@ export class RecoverPasswordPage {
     public navParams: NavParams,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
-    public csdata: CsDataProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public csdata: CsDataProvider
   ) {
   }
 

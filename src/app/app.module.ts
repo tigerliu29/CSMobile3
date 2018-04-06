@@ -11,13 +11,15 @@ import { LoginPage } from '../pages/login/login';
 import { CsDataProvider } from '../providers/cs-data/cs-data';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RecoverPasswordPage } from '../pages/recover-password/recover-password';
+import { RegisterPage } from '../pages/register/register';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    RecoverPasswordPage
+    RecoverPasswordPage,
+    RegisterPage
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { RecoverPasswordPage } from '../pages/recover-password/recover-password'
     MyApp,
     HomePage,
     LoginPage,
-    RecoverPasswordPage
+    RecoverPasswordPage,
+    RegisterPage
   ],
   providers: [
     StatusBar,

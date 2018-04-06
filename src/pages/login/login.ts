@@ -5,6 +5,7 @@ import { HomePage } from '../home/home';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { LoginInfoName } from '../../app/app.module';
 import { RecoverPasswordPage } from '../recover-password/recover-password';
+import { RegisterPage } from '../register/register';
 
 /**
  * Generated class for the LoginPage page.
@@ -76,7 +77,7 @@ export class LoginPage {
   }
 
   GoRegister() {
-
+    this.navCtrl.push(RegisterPage);
   }
 
   GoRecoverPassword() {
