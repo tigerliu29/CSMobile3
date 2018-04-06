@@ -18,11 +18,14 @@ export class CsDataProvider {
 
   readonly BaseAddr = "http://csservice.goyo58.cn:8080";
   readonly LoginAddr = this.BaseAddr + "/User/Login";
+  readonly SendRecorverCodeAddr = this.BaseAddr + "/MobilePhoneConfirmCode/Send";
+  readonly ResetPasswordAddr = this.BaseAddr + "/User/ResetPassword";
 
   UserId: string;
   UserIdentity: string;
   LoginPassword: string;
   LoginToken: string;
+  LoginUserInfo: LoginUserInfo;
 
   constructor(
     public http: HttpClient,
@@ -36,26 +39,22 @@ export class CsDataProvider {
     let request = this.PrepareRequest(new LoginRequest());
     request.UserIdentity = uid;
     request.Password = pwd;
-    return this.MakeRequest(LoginResult, this.LoginAddr, request)
-      .pipe(
-        tap(
-          result => {
-            if (result.ResultCode == EC_Success) {
-              this.UserId = result.LoginUserInfo.Id;
-              this.LoginToken = result.LoginUserInfo.LoginToken;
-              this.UserIdentity = request.UserIdentity;
-              this.LoginPassword = request.Password;
-              this.nativeStorage.setItem(
-                "LoginInfo",
-                {
-                  UserIdentity: this.UserIdentity,
-                  LoginPassword: this.LoginPassword
-                }
-              )
-            }
-          }
-        )
-      );
+    return this.MakeRequest(SendMobilePhoneConfirmCodeResult, this.LoginAddr, request);
+  }
+
+  SendMobilePhoneConfirmCode(phone: string, scenario: string) {
+    let request = this.PrepareRequest(new SendMobilePhoneConfirmCodeRequest());
+    request.MobilePhoneNumber = phone;
+    request.Scenario = scenario;
+    return this.MakeRequest(LoginResult, this.SendRecorverCodeAddr, request);
+  }
+
+  ResetPassword(phone: string, code: string, pwd: string) {
+    let request = this.PrepareRequest(new ResetPasswordRequest());
+    request.MobilePhoneNumber = phone;
+    request.ConfirmCode = code;
+    request.NewPassword = pwd;
+    return this.MakeRequest(ResetPasswordResult, this.ResetPasswordAddr, request);
   }
 
   private PrepareRequest<T extends RequestBase>(request: T): T {
@@ -111,7 +110,7 @@ class RequestBase {
   ProtocalVersion: string;
 }
 
-export class LoginRequest extends RequestBase {
+class LoginRequest extends RequestBase {
   UserIdentity: string;
   Password: string;
 }
@@ -136,4 +135,23 @@ export class UserInfo {
 
 export class LoginUserInfo extends UserInfo {
   LoginToken: string;
+}
+
+class SendMobilePhoneConfirmCodeRequest extends RequestBase {
+  MobilePhoneNumber: string;
+  Scenario: string;
+}
+
+export class SendMobilePhoneConfirmCodeResult extends ResultBase {
+
+}
+
+class ResetPasswordRequest extends RequestBase {
+  MobilePhoneNumber: string;
+  ConfirmCode: string;
+  NewPassword: string;
+}
+
+export class ResetPasswordResult extends ResultBase{
+
 }

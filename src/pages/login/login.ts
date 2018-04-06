@@ -4,6 +4,7 @@ import { CsDataProvider } from '../../providers/cs-data/cs-data';
 import { HomePage } from '../home/home';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { LoginInfoName } from '../../app/app.module';
+import { RecoverPasswordPage } from '../recover-password/recover-password';
 
 /**
  * Generated class for the LoginPage page.
@@ -37,7 +38,8 @@ export class LoginPage {
 
   DoLogin() {
     console.log('DoLogin');
-    if (this.UserIdentity.length == 0 || this.Password.length == 0) {
+    let uid = this.UserIdentity.trim();
+    if (uid.length == 0 || this.Password.length == 0) {
       let toast = this.toastCtrl.create({
         message: "请输入用户名或密码",
         duration: 3000,
@@ -50,7 +52,7 @@ export class LoginPage {
       content: "登录..."
     });
     loader.present();
-    this.csdata.Login(this.UserIdentity, this.Password)
+    this.csdata.Login(uid, this.Password)
       .subscribe(
         result => {
           loader.dismiss();
@@ -77,8 +79,8 @@ export class LoginPage {
 
   }
 
-  GoFindPassword() {
-
+  GoRecoverPassword() {
+    this.navCtrl.push(RecoverPasswordPage);
   }
 
 }

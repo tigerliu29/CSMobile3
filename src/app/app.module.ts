@@ -10,12 +10,14 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import { LoginPage } from '../pages/login/login';
 import { CsDataProvider } from '../providers/cs-data/cs-data';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { RecoverPasswordPage } from '../pages/recover-password/recover-password';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    RecoverPasswordPage
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   entryComponents: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    RecoverPasswordPage
   ],
   providers: [
     StatusBar,
@@ -54,3 +57,6 @@ export const EC_Success = 0;           // Error code for success
 export const EC_GenericError = -1;     // Error code for generic error
 export const EC_InvalidRequest = -2;   // Error code for authentication fails.
 export const EC_ExceptionOccured = -3; // Error code for local exception
+
+export const COS_Register = "用户注册";
+export const COS_RecoverPassword = "重置密码";
