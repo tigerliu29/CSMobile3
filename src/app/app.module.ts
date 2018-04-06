@@ -6,25 +6,51 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { NativeStorage } from '@ionic-native/native-storage';
+import { LoginPage } from '../pages/login/login';
+import { CsDataProvider } from '../providers/cs-data/cs-data';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpClientModule,
+    IonicModule.forRoot(
+      MyApp,
+      {
+        mode: 'ios',
+        backButtonText: '返回',
+        monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+        monthShortNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+        dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+        dayShortNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+      }
+    )
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    NativeStorage,
+    HttpClient,
+    CsDataProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }
+
+export const LoginInfoName: string = "LoginInfo";
+export const EC_Success = 0;           // Error code for success
+export const EC_GenericError = -1;     // Error code for generic error
+export const EC_InvalidRequest = -2;   // Error code for authentication fails.
+export const EC_ExceptionOccured = -3; // Error code for local exception
