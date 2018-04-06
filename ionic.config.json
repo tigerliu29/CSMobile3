@@ -2,5 +2,7 @@
   "name": "csmobile3",
   "app_id": "857870f9",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }
