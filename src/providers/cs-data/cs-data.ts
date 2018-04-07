@@ -77,7 +77,7 @@ export class CsDataProvider {
     request.NewPassword = pwd;
     return this.MakeRequest(ResetPasswordResult, this.ResetPasswordAddr, request);
   }
-  
+
   Register(userName: string, pwd: string, phone: string, code: string, nickname: string) {
     let request = this.PrepareRequest(new RegisterUserRequest());
     request.UserName = userName;
