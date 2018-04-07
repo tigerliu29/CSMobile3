@@ -49,6 +49,7 @@ export class CsDataProvider {
             this.LoginPassword = request.Password;
             this.LoginToken = result.LoginUserInfo.LoginToken;
             this.LoginUserInfo = result.LoginUserInfo;
+            console.log("Write LoginInfo")
             this.nativeStorage.setItem(LoginInfoName, { UserIdentity: request.UserId, Password: request.Password });
           }
           else {
@@ -117,7 +118,7 @@ export class CsDataProvider {
       .pipe(
         tap(
           data => {
-            if (data.ResultCode == EC_InvalidRequest) {
+            if (data.ResultCode == EC_InvalidRequest && data.ErrorMessage == "无效的身份验证信息") {
               this.ev.publish("AuthFails");
             }
           }

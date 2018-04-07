@@ -12,6 +12,11 @@ import { CsDataProvider } from '../providers/cs-data/cs-data';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RecoverPasswordPage } from '../pages/recover-password/recover-password';
 import { RegisterPage } from '../pages/register/register';
+import { IndexPage } from '../pages/index';
+import { DocPage } from '../pages/doc/doc';
+import { AuthPage } from '../pages/auth/auth';
+import { CyclePage } from '../pages/cycle/cycle';
+import { PersionPage } from '../pages/persion/persion';
 
 @NgModule({
   declarations: [
@@ -19,7 +24,12 @@ import { RegisterPage } from '../pages/register/register';
     HomePage,
     LoginPage,
     RecoverPasswordPage,
-    RegisterPage
+    RegisterPage,
+    IndexPage,
+    DocPage,
+    AuthPage,
+    CyclePage,
+    PersionPage
   ],
   imports: [
     BrowserModule,
@@ -42,7 +52,12 @@ import { RegisterPage } from '../pages/register/register';
     HomePage,
     LoginPage,
     RecoverPasswordPage,
-    RegisterPage
+    RegisterPage,
+    IndexPage,
+    DocPage,
+    AuthPage,
+    CyclePage,
+    PersionPage
   ],
   providers: [
     StatusBar,

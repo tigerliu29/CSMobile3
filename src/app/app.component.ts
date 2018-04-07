@@ -12,7 +12,7 @@ import { LoginPage } from '../pages/login/login';
 })
 export class MyApp {
   rootPage: any;
-  @ViewChild('Nav') nav;
+  @ViewChild('rootnav') nav;
 
   constructor(
     platform: Platform, statusBar: StatusBar,

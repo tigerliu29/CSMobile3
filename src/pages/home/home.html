@@ -1,14 +1,11 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+  <ion-tabs>
+    <ion-tab [root]="indexRoot" tabTitle="主页" tabIcon="home"></ion-tab>
+    <ion-tab [root]="docRoot" tabTitle="行业资料" tabIcon="book"></ion-tab>
+    <ion-tab [root]="authRoot" tabTitle="手机锁" tabIcon="qr-scanner"></ion-tab>
+    <ion-tab [root]="cycleRoot" tabTitle="行业圈" tabIcon="cloud-circle"></ion-tab>
+    <ion-tab [root]="personRoot" tabTitle="个人中心" tabIcon="person"></ion-tab>
+  </ion-tabs>
+
 </ion-content>
