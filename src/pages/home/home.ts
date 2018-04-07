@@ -4,7 +4,7 @@ import { CsDataProvider } from '../../providers/cs-data/cs-data';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { ViewChild } from '@angular/core';
 import { Slides } from 'ionic-angular';
-import { LoginInfoName } from '../../app/app.module';
+import { LoginInfoName, EC_Success } from '../../app/app.module';
 import { LoginPage } from '../login/login';
 import { IndexPage } from '../index';
 import { DocPage } from '../doc/doc';
@@ -47,7 +47,7 @@ export class HomePage {
               .subscribe(
                 result => {
                   loader.dismiss();
-                  if (result.ResultCode != 0) {
+                  if (result.ResultCode != EC_Success) {
                     this.navCtrl.setRoot(LoginPage, {}, { animate: true, direction: 'forward' });
                   }
                 }

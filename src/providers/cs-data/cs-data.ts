@@ -37,6 +37,7 @@ export class CsDataProvider {
   }
 
   Login(uid: string, pwd: string) {
+    console.log("UID:" + uid + "\tPWD:" + pwd)
     let request = this.PrepareRequest(new LoginRequest());
     request.UserIdentity = uid;
     request.Password = pwd;
@@ -50,7 +51,7 @@ export class CsDataProvider {
             this.LoginToken = result.LoginUserInfo.LoginToken;
             this.LoginUserInfo = result.LoginUserInfo;
             console.log("Write LoginInfo")
-            this.nativeStorage.setItem(LoginInfoName, { UserIdentity: request.UserId, Password: request.Password });
+            this.nativeStorage.setItem(LoginInfoName, { UserIdentity: request.UserIdentity, Password: request.Password });
           }
           else {
             this.UserId = null;
