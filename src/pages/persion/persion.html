@@ -1,18 +1,74 @@
-<!--
-  Generated template for the PersionPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>个人中心</ion-title>
+    <ion-title>
+      个人中心
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
+  <ion-row style="background:white">
+    <ion-col col-auto padding-horizontal>
+      <img [src]="UserDetails.PortraitUrl" width="64" />
+    </ion-col>
+    <ion-col padding>
+      <div style="font-size:large; font-weight:bold" *ngIf="UserDetails.NickName!=null && UserDetails.NickName.length>0">{{UserDetails.NickName}} ({{UserDetails.UserName}})</div>
+      <div *ngIf="UserDetails.NickName==null || UserDetails.NickName.length==0">{{UserDetails.NickName}}({{UserDetails.UserName}})</div>
+      <div>{{UserDetails.MobilePhoneNumber}}</div>
+    </ion-col>
+  </ion-row>
 
+  <ion-list>
+    <ion-list-header margin-top>
+      个人资料
+    </ion-list-header>
+    <ion-item (click)="ChangeRealName()">
+      <div style="color: rgb(153, 153, 153);">真实姓名</div>
+      <div item-end>{{UserDetails.RealName}}</div>
+    </ion-item>
+    <ion-item (click)="ChangeEmail()">
+      <div style="color: rgb(153, 153, 153);">电子邮箱</div>
+      <div item-end>{{UserDetails.Email}}</div>
+    </ion-item>
+    <ion-item (click)="ChangeNickName()">
+      <div style="color: rgb(153, 153, 153);">昵称</div>
+      <div item-end>{{UserDetails.NickName}}</div>
+    </ion-item>
+    <ion-item>
+      <ion-label>性别</ion-label>
+      <ion-select [(ngModel)]="UserDetails.Sex" okText="确定" cancelText="取消" (ngModelChange)="ChangeSex()">
+        <ion-option value="{{null}}">保密</ion-option>
+        <ion-option value="true">男</ion-option>
+        <ion-option value="false">女</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>出生日期</ion-label>
+      <ion-datetime displayFormat="YYYY年M月D日" [(ngModel)]="UserDetails.Birthday" cancelText="取消" doneText="确定" (ngModelChange)="ChangeBirthday()"></ion-datetime>
+    </ion-item>
+
+    <ion-list-header margin-top>
+      行业资料
+    </ion-list-header>
+    <ion-item (click)="ChangeCollege()">
+      <div style="color: rgb(153, 153, 153);">毕业院校</div>
+      <div item-end>{{UserDetails.College}}</div>
+    </ion-item>
+    <ion-item (click)="ChangeEducation()">
+      <div style="color: rgb(153, 153, 153);">学历</div>
+      <div item-end>{{UserDetails.Education}}</div>
+    </ion-item>
+    <ion-item (click)="ChangeCertificates()">
+      <div style="color: rgb(153, 153, 153);">获得证书</div>
+      <div item-end>{{UserDetails.Certificates}}</div>
+    </ion-item>
+
+    <ion-list-header margin-top>
+      其他
+    </ion-list-header>
+    <ion-item (click)="ExitLogin()">
+      <ion-icon name="exit" item-start></ion-icon>
+      退出登录
+    </ion-item>
+  </ion-list>
 </ion-content>

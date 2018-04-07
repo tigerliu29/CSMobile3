@@ -22,6 +22,8 @@ export class CsDataProvider {
   readonly ResetPasswordAddr = this.BaseAddr + "/User/ResetPassword";
   readonly RegisterUserAddr = this.BaseAddr + "/User/Register";
   readonly GetAuthCodeAddr = this.BaseAddr + "/User/GetAuthCode";
+  readonly GetUserDetailsAddr = this.BaseAddr + "/User/GetUserDetails";
+  readonly UpdateUserDetailsAddr = this.BaseAddr + "/User/UpdateUserDetails";
 
   UserId: string;
   UserIdentity: string;
@@ -97,6 +99,39 @@ export class CsDataProvider {
     return this.MakeRequest(GetAuthCodeResult, this.GetAuthCodeAddr, request);
   }
 
+  GetUserDetails(id: string) {
+    let request = this.PrepareRequest(new GetUserDetailsRequest());
+    request.Id = id;
+    return this.MakeRequest(GetUserDetailsResult, this.GetUserDetailsAddr, request)
+      .pipe(
+        tap(
+          r => {
+            if (r.UserDetails.Birthday != null)
+              r.UserDetails.Birthday = this.DateDeltaString(this.GetDate(r.UserDetails.Birthday));
+            else
+              r.UserDetails.Birthday = null;
+          }
+        )
+      );
+  }
+
+  UpdateUserDetails(details: UserDetailsInfo) {
+    let request = this.PrepareRequest(new UpdateUserDetailsRequest());
+    request.UserDetails = details;
+    return this.MakeRequest(GetUserDetailsResult, this.GetUserDetailsAddr, request)
+      .pipe(
+        tap(
+          r => {
+            if (r.UserDetails.Birthday != null)
+              r.UserDetails.Birthday = this.DateDeltaString(this.GetDate(r.UserDetails.Birthday));
+            else
+              r.UserDetails.Birthday = null;
+          }
+        )
+      );
+  }
+
+
   private PrepareRequest<T extends RequestBase>(request: T): T {
     request.ClientId = "";
     request.ClientType = "建筑同城移动APP";
@@ -133,6 +168,29 @@ export class CsDataProvider {
         )
       );
     return result;
+  }
+
+  GetDate(str: string) {
+    let date = new Date(parseInt(str.replace("/Date(", "").replace(")/", ""), 10));
+    return date;
+  }
+
+  DateDeltaString(date: Date) {
+    let today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
+    let delta = date.getTime() - today.getTime();
+    if (delta > 0 && delta < 1000 * 60 * 60 * 24) {
+      return (date.getHours()) + ":" + (date.getMinutes());
+    }
+    else if (today.getFullYear == date.getFullYear) {
+      return (date.getMonth() + 1) + "月" + (date.getDate()) + "日";
+    }
+    else {
+      return date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + (date.getDate()) + "日";
+    }
   }
 }
 
@@ -214,4 +272,41 @@ class GetAuthCodeRequest extends RequestBase {
 
 export class GetAuthCodeResult extends ResultBase {
   AuthCode: string;
+}
+
+class GetUserDetailsRequest extends RequestBase {
+  Id: string;
+}
+
+export class GetUserDetailsResult extends ResultBase {
+  UserDetails: UserDetailsInfo;
+}
+
+export class UserDetailsInfo extends UserInfo {
+  Birthday: string;
+  Email: string;
+  Sex: string;
+  RealName: string;
+  College: string;
+  Education: string;
+  Certificates: string;
+  WorkYears: string;
+  WorkNature: string;
+  WorkSpeciality: string;
+  UserWorkInfos: UserWorkInfo[];
+}
+
+export class UserWorkInfo {
+  Id: number;
+  WorkType: string;
+  WorkSpecialization: string;
+  WorkTime: string;
+}
+
+class UpdateUserDetailsRequest extends RequestBase {
+  UserDetails: UserDetailsInfo;
+}
+
+export class UpdateUserDetailsResult extends ResultBase {
+  NewUserDetails: UserDetailsInfo;
 }
