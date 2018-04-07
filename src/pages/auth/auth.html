@@ -14,5 +14,23 @@
 
 
 <ion-content padding>
+  <ion-card>
+
+    <ion-card-header>
+      获取授权码
+    </ion-card-header>
+
+    <ion-card-content>
+      点击屏幕下方“扫面二维码”按钮，对要求进行软件授权的窗口中的二维码进行扫描，以便获取软件授权序列号。
+    </ion-card-content>
+  </ion-card>
+
+  <div text-center style="margin-top: 60px; font-size:xx-large;">{{AuthCode}}</div>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full (click)="DoScan()">扫描二维码</button>
+  </ion-toolbar>
+</ion-footer>

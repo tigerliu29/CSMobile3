@@ -21,6 +21,7 @@ export class CsDataProvider {
   readonly SendRecorverCodeAddr = this.BaseAddr + "/MobilePhoneConfirmCode/Send";
   readonly ResetPasswordAddr = this.BaseAddr + "/User/ResetPassword";
   readonly RegisterUserAddr = this.BaseAddr + "/User/Register";
+  readonly GetAuthCodeAddr = this.BaseAddr + "/User/GetAuthCode";
 
   UserId: string;
   UserIdentity: string;
@@ -88,6 +89,12 @@ export class CsDataProvider {
     request.MobilePhoneConfirmCode = code;
     request.Password = pwd;
     return this.MakeRequest(RegisterUserResult, this.RegisterUserAddr, request);
+  }
+
+  GetAuthCode(authStr: string) {
+    let request = this.PrepareRequest(new GetAuthCodeRequest());
+    request.AuthString = authStr;
+    return this.MakeRequest(GetAuthCodeResult, this.GetAuthCodeAddr, request);
   }
 
   private PrepareRequest<T extends RequestBase>(request: T): T {
@@ -199,4 +206,12 @@ class RegisterUserRequest extends RequestBase {
 
 export class RegisterUserResult extends ResultBase {
 
+}
+
+class GetAuthCodeRequest extends RequestBase {
+  AuthString: string;
+}
+
+export class GetAuthCodeResult extends ResultBase {
+  AuthCode: string;
 }

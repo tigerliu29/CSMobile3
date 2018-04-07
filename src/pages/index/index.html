@@ -16,44 +16,38 @@
 <ion-content padding>
 
   <ion-slides style="height: 25%" loop>
-    <ion-slide>
+    <ion-slide (click)="OpenWeb('http://www.baidu.com')">
       <img src="http://gw.alicdn.com/imgextra/TB2P8f2beuSBuNjy1XcXXcYjFXa_!!198-0-lubanu.jpg_760x760Q50s50.jpg">
     </ion-slide>
-    <ion-slide>
+    <ion-slide (click)="OpenWeb('http://www.baidu.com')">
       <img src="//img.alicdn.com/bao/uploaded/TB1nY1EaYuWBuNjSszgSuv8jVXa.jpg_760x760Q50s50.jpg">
     </ion-slide>
-    <ion-slide>
+    <ion-slide (click)="OpenWeb('http://www.baidu.com')">
       <img src="//gw.alicdn.com/imgextra/TB2WDOBa9CWBuNjy0FhXXb6EVXa_!!19-0-lubanu.jpg_760x760Q50s50.jpg">
     </ion-slide>
   </ion-slides>
 
   <ion-grid style="margin-top: 30px;">
     <ion-row id="mainbuttons" nowrap justify-content-between>
-      <div text-center>
-        <div>
-          <ion-icon name="home"></ion-icon>
-        </div>
-        <label>主页</label>
-      </div>
-      <div text-center>
+      <div text-center (click)="Goto('行业资料')">
         <div>
           <ion-icon name="book"></ion-icon>
         </div>
         <label>行业资料</label>
       </div>
-      <div text-center>
+      <div text-center (click)="Goto('软件锁')">
         <div>
           <ion-icon name="qr-scanner"></ion-icon>
         </div>
         <label>软件锁</label>
       </div>
-      <div text-center>
+      <div text-center (click)="Goto('行业圈')">
         <div>
           <ion-icon name="cloud-circle"></ion-icon>
         </div>
         <label>行业圈</label>
       </div>
-      <div text-center>
+      <div text-center (click)="Goto('个人中心')">
         <div>
           <ion-icon name="person"></ion-icon>
         </div>
