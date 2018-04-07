@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, LoadingController, AlertController } from 'ionic-angular';
 import { CsDataProvider } from '../../providers/cs-data/cs-data';
 import { EC_Success, COS_RecoverPassword, COS_Register } from '../../app/app.module';
+import { HomePage } from '../home/home';
 
 /**
  * Generated class for the RegisterPage page.
@@ -134,7 +135,6 @@ export class RegisterPage {
               position: 'top'
             });
             toast.present();
-            return;
           }
           else {
             let toast = this.toastCtrl.create({
@@ -143,13 +143,131 @@ export class RegisterPage {
               position: 'top'
             });
             toast.present();
-            return;
           }
         }
       );
   }
 
-  Register(){
+  Register() {
+
+    if (this.UserName.length == 0) {
+      let toast = this.toastCtrl.create({
+        message: "请输用户名",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    if (parseInt(this.UserName) != NaN) {
+      let toast = this.toastCtrl.create({
+        message: "用户名不能是纯数字",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    if (this.Password.length == 0) {
+      let toast = this.toastCtrl.create({
+        message: "请输入密码",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    if (this.NickName.length == 0) {
+      let toast = this.toastCtrl.create({
+        message: "请输入昵称",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    if (this.ConfirmPassword.length == 0) {
+      let toast = this.toastCtrl.create({
+        message: "请输入新账号密码",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    if (this.ConfirmPassword != this.Password) {
+      let toast = this.toastCtrl.create({
+        message: "两次输入的密码不一致",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    if (!this.PhoneNumberIsValid) {
+      let toast = this.toastCtrl.create({
+        message: "请输入合法的手机号码",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    if (!this.ConfirmCodeIsValid) {
+      let toast = this.toastCtrl.create({
+        message: "请输入正确的手机验证码",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
+    let loader = this.loadingCtrl.create({
+      content: "注册用户..."
+    });
+    loader.present();
+
+    this.csdata.Register(this.UserName, this.Password, this.PhoneNumber, this.ConfirmCode, this.NickName)
+      .subscribe(
+        result => {
+          if (result.ResultCode == EC_Success) {
+            this.csdata.Login(this.UserName, this.Password)
+              .subscribe(
+                result => {
+                  loader.dismiss();
+                  if (result.ResultCode == EC_Success) {
+                    this.navCtrl.setRoot(HomePage, {}, { animate: true, direction: 'forward' });
+                  }
+                  else {
+                    let toast = this.toastCtrl.create({
+                      message: result.ErrorMessage,
+                      duration: 3000,
+                      position: 'top'
+                    });
+                    toast.present();
+                  }
+                }
+              )
+          }
+          else {
+            loader.dismiss();
+            let toast = this.toastCtrl.create({
+              message: result.ErrorMessage,
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+          }
+        }
+      );
 
   }
 

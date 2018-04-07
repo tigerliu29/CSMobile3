@@ -115,7 +115,6 @@ export class RecoverPasswordPage {
               position: 'top'
             });
             toast.present();
-            return;
           }
           else {
             let toast = this.toastCtrl.create({
@@ -124,7 +123,6 @@ export class RecoverPasswordPage {
               position: 'top'
             });
             toast.present();
-            return;
           }
         }
       );
@@ -200,7 +198,6 @@ export class RecoverPasswordPage {
               ]
             });
             alert.present();
-            return;
           }
           else {
             let toast = this.toastCtrl.create({
@@ -209,7 +206,6 @@ export class RecoverPasswordPage {
               position: 'top'
             });
             toast.present();
-            return;
           }
         }
       );

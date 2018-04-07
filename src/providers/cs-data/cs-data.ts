@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of'
 import { NativeStorage } from '@ionic-native/native-storage';
-import { EC_Success, EC_ExceptionOccured, EC_InvalidRequest } from '../../app/app.module';
+import { EC_Success, EC_ExceptionOccured, EC_InvalidRequest, LoginInfoName } from '../../app/app.module';
 
 /*
   Generated class for the CsDataProvider provider.
@@ -20,6 +20,7 @@ export class CsDataProvider {
   readonly LoginAddr = this.BaseAddr + "/User/Login";
   readonly SendRecorverCodeAddr = this.BaseAddr + "/MobilePhoneConfirmCode/Send";
   readonly ResetPasswordAddr = this.BaseAddr + "/User/ResetPassword";
+  readonly RegisterUserAddr = this.BaseAddr + "/User/Register";
 
   UserId: string;
   UserIdentity: string;
@@ -39,14 +40,34 @@ export class CsDataProvider {
     let request = this.PrepareRequest(new LoginRequest());
     request.UserIdentity = uid;
     request.Password = pwd;
-    return this.MakeRequest(SendMobilePhoneConfirmCodeResult, this.LoginAddr, request);
+    return this.MakeRequest(LoginResult, this.LoginAddr, request)
+      .pipe(
+        tap(result => {
+          if (result.ResultCode == EC_Success) {
+            this.UserId = result.LoginUserInfo.Id;
+            this.UserIdentity = request.UserIdentity;
+            this.LoginPassword = request.Password;
+            this.LoginToken = result.LoginUserInfo.LoginToken;
+            this.LoginUserInfo = result.LoginUserInfo;
+            this.nativeStorage.setItem(LoginInfoName, { UserIdentity: request.UserId, Password: request.Password });
+          }
+          else {
+            this.UserId = null;
+            this.UserIdentity = null;
+            this.LoginPassword = null;
+            this.LoginToken = null;
+            this.LoginUserInfo = null;
+            this.nativeStorage.remove(LoginInfoName);
+          }
+        })
+      );
   }
 
   SendMobilePhoneConfirmCode(phone: string, scenario: string) {
     let request = this.PrepareRequest(new SendMobilePhoneConfirmCodeRequest());
     request.MobilePhoneNumber = phone;
     request.Scenario = scenario;
-    return this.MakeRequest(LoginResult, this.SendRecorverCodeAddr, request);
+    return this.MakeRequest(SendMobilePhoneConfirmCodeResult, this.SendRecorverCodeAddr, request);
   }
 
   ResetPassword(phone: string, code: string, pwd: string) {
@@ -55,6 +76,16 @@ export class CsDataProvider {
     request.ConfirmCode = code;
     request.NewPassword = pwd;
     return this.MakeRequest(ResetPasswordResult, this.ResetPasswordAddr, request);
+  }
+  
+  Register(userName: string, pwd: string, phone: string, code: string, nickname: string) {
+    let request = this.PrepareRequest(new RegisterUserRequest());
+    request.UserName = userName;
+    request.NickName = nickname;
+    request.MobilePhoneNumber = phone;
+    request.MobilePhoneConfirmCode = code;
+    request.Password = pwd;
+    return this.MakeRequest(RegisterUserResult, this.RegisterUserAddr, request);
   }
 
   private PrepareRequest<T extends RequestBase>(request: T): T {
@@ -152,6 +183,18 @@ class ResetPasswordRequest extends RequestBase {
   NewPassword: string;
 }
 
-export class ResetPasswordResult extends ResultBase{
+export class ResetPasswordResult extends ResultBase {
+
+}
+
+class RegisterUserRequest extends RequestBase {
+  MobilePhoneConfirmCode: string;
+  MobilePhoneNumber: string;
+  NickName: string;
+  Password: string;
+  UserName: string
+}
+
+export class RegisterUserResult extends ResultBase {
 
 }
