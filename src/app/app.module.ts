@@ -20,6 +20,7 @@ import { AuthPage } from '../pages/auth/auth';
 import { CyclePage } from '../pages/cycle/cycle';
 import { PersionPage } from '../pages/persion/persion';
 import { ScanModalPage } from '../pages/scan-modal/scan-modal';
+import { StimePipe } from '../pipes/stime/stime';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ScanModalPage } from '../pages/scan-modal/scan-modal';
     AuthPage,
     CyclePage,
     PersionPage,
-    ScanModalPage
+    ScanModalPage,
+    StimePipe
   ],
   imports: [
     BrowserModule,

@@ -15,4 +15,35 @@
 
 <ion-content padding>
 
+  <ion-grid>
+    <ng-container *ngFor="let record of PostRecords">
+      <ion-row nowrap>
+        <ion-col col-auto>
+          <img width="32" height="32" [src]="record.OwnerPortraitUrl">
+        </ion-col>
+        <ion-col>
+          <div style="color:royalblue; font-size: small;margin-bottom:5px;">
+            {{record.OwnerNickName}}
+          </div>
+          <div>{{record.Content}}</div>
+          <div>
+            <div style="float: left; font-size: xsmall; color:darkgrey; margin-top: 5px;">{{record.PublishTimeObj | stime}}</div>
+            <button ion-button small style="float: right;" (click)="Reply(record)">回复</button>
+          </div>
+          <div *ngIf="record.Replies.length>0" style="clear: both; padding: 10px; background-color: rgb(244, 244, 244)">
+            <div *ngFor="let reply of record.Replies">
+              <span style="color: royalblue">{{reply.ReplyUserNickName}}：</span>
+              <span>{{reply.Content}}</span>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <hr style="width: 100%; background-color: rgba(239, 239, 239, 0.75); height: 1px; border-width: 0px;">
+    </ng-container>
+  </ion-grid>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

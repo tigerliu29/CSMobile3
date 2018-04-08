@@ -24,6 +24,11 @@ export class CsDataProvider {
   readonly GetAuthCodeAddr = this.BaseAddr + "/User/GetAuthCode";
   readonly GetUserDetailsAddr = this.BaseAddr + "/User/GetUserDetails";
   readonly UpdateUserDetailsAddr = this.BaseAddr + "/User/UpdateUserDetails";
+  readonly GetPostRecords2Addr = this.BaseAddr + "/Post/GetPostRecords2";
+  readonly NewPostAddr = this.BaseAddr + "/Post/NewPost";
+  readonly NewReplyAddr = this.BaseAddr + "/Post/NewReply";
+  readonly GetPostRepliesAddr = this.BaseAddr + "/Post/GetPostReplies";
+  readonly DeletePostAddr = this.BaseAddr + "/Post/DeletePost";
 
   UserId: string;
   UserIdentity: string;
@@ -99,6 +104,37 @@ export class CsDataProvider {
     return this.MakeRequest(GetAuthCodeResult, this.GetAuthCodeAddr, request);
   }
 
+  GetPostRecords(getNew: boolean, tagids: string[], rcodes: string[], pattern:string, replyids: number[], sgroup: string, lastpid: number, lastptitme: string) {
+    let request = this.PrepareRequest(new GetPostRecords2Request());
+    request.GetNew = getNew;
+    request.RegionCodes = rcodes;
+    request.TagGuids = tagids;
+    request.LastPostId = lastpid;
+    request.LastPostTime = lastptitme;
+    request.PostReplyIds = replyids;
+    request.MaxCount = 20;
+    request.MaxReplyCount = 1024;
+    return this.MakeRequest(GetPostRecords2Result, this.GetPostRecords2Addr, request)
+      .pipe(
+        tap(
+          result=>{
+            result.PostRecords
+              .forEach(
+                pr=>{
+                  pr.PublishTimeObj = this.GetDate(pr.PublishTime);
+                  pr.Replies
+                    .forEach(
+                      rr=>{
+                        rr.ReplyTimeObj = this.GetDate(rr.ReplyTime);
+                      }
+                    );
+                }
+              );
+          }
+        )
+      );;
+  }
+
   GetUserDetails(id: string) {
     let request = this.PrepareRequest(new GetUserDetailsRequest());
     request.Id = id;
@@ -131,6 +167,24 @@ export class CsDataProvider {
       );
   }
 
+  public NewReply(postid: number, content: string, uid: string) {
+    let request = this.PrepareRequest(new NewReplyRequest());
+    request.UserId = uid;
+    request.Content = content;
+    request.PostRecordId = postid;
+    return this.MakeRequest(NewReplyResult, this.NewReplyAddr, request);
+  }
+
+  public GetReply(getnew: boolean, postid: number, lastid?: number, lasttime?: string) {
+    let request = this.PrepareRequest(new GetPostRepliesRequest());
+    request.GetNew = getnew;
+    request.LastReplyId = lastid;
+    request.LastReplyTime = lasttime;
+    request.MaxCount = 100;
+    request.PostId = postid;
+    return this.MakeRequest(GetPostRepliesResult, this.GetPostRepliesAddr, request);
+  }
+
 
   private PrepareRequest<T extends RequestBase>(request: T): T {
     request.ClientId = "";
@@ -140,7 +194,7 @@ export class CsDataProvider {
     request.UserId = this.UserId;
     request.Token = this.LoginToken;
     return request;
-  }
+  }  
 
   private MakeRequest<T extends ResultBase>(
     c: new () => T,
@@ -309,4 +363,92 @@ class UpdateUserDetailsRequest extends RequestBase {
 
 export class UpdateUserDetailsResult extends ResultBase {
   NewUserDetails: UserDetailsInfo;
+}
+
+class GetPostRecords2Request extends RequestBase {
+  MaxCount: number;
+  MaxReplyCount: number;
+  LastPostId: number;
+  LastPostTime: string;
+  GetNew: boolean;
+  TagGuids: string[];
+  RegionCodes: string[];
+  SearchPattern: string;
+  PostReplyIds: number[];
+  SearchGroup: string;
+}
+
+export class GetPostRecords2Result extends ResultBase {
+  PostRecords: PostRecordInfo[];
+  Regions: RegionInfo[];
+  PostTags: PostTagInfo[];
+}
+
+export class PostTagInfo {
+  Id: string;
+  Category: string;
+  Name: string;
+  DisplayName: string;
+  Explanation: string;
+  TagCategory: string;
+}
+
+export class RegionInfo {
+  Code: string;
+  Name: string;
+  FullName: string;
+}
+
+export class PostRecordInfo {
+  Id: number;
+  Content: string;
+  OwnerId: string;
+  OwnerNickName: string;
+  OwnerPortraitUrl: string;
+  PublishTime: string;
+  PublishTimeObj: Date;
+  ReplyCount: number;
+  ImageUrls: string[];
+  Tags: PostTagInfo[];
+  Regions: RegionInfo[];
+  PostContentType: string;
+  PostContentTypeExtraData: string;
+  ExternUrl: string;
+  ExternUrlTitle: string;
+  IconTypes: string[];
+  Replies: PostReplyInfo[];
+}
+
+export class PostReplyInfo {
+  Id: number;
+  PostRecordId: number;
+  Content: string;
+  ReplyTime: string;
+  ReplyTimeObj: Date;
+  ReplyUserId: string;
+  ReplyUserNickName: string;
+  ReplyUserPortraitUrl: string;
+  IconTypes: string[];
+}
+
+class NewReplyRequest extends RequestBase {
+  PostRecordId: number;
+  Content: string;
+  TargetUserId: string;
+}
+
+export class NewReplyResult extends ResultBase {
+
+}
+
+class GetPostRepliesRequest extends RequestBase {
+  PostId: number;
+  LastReplyTime?: string;
+  LastReplyId?: number;
+  MaxCount: number;
+  GetNew: boolean;
+}
+
+export class GetPostRepliesResult extends ResultBase {
+  Replies: PostReplyInfo[];
 }
