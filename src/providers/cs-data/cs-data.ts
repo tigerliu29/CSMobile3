@@ -114,6 +114,7 @@ export class CsDataProvider {
     request.PostReplyIds = replyids;
     request.MaxCount = 20;
     request.MaxReplyCount = 1024;
+    request.SearchPattern = pattern;
     return this.MakeRequest(GetPostRecords2Result, this.GetPostRecords2Addr, request)
       .pipe(
         tap(
@@ -173,6 +174,20 @@ export class CsDataProvider {
     request.Content = content;
     request.PostRecordId = postid;
     return this.MakeRequest(NewReplyResult, this.NewReplyAddr, request);
+  }
+
+  public NewPost(zyid: string, typeid: string, regionCode: string, content: string) {
+    let request = this.PrepareRequest(new NewPostRequest());
+    request.Content = content;
+    request.RegionCode = regionCode;
+    request.TagIds = new Array<string>(zyid, typeid);
+    return this.MakeRequest(NewPostResult, this.NewPostAddr, request);
+  }
+
+  public DeletePost(id: number) {
+    let request = this.PrepareRequest(new DeletePostRequest());
+    request.PostId = id;
+    return this.MakeRequest(DeletePostResult, this.DeletePostAddr, request);
   }
 
   public GetReply(getnew: boolean, postid: number, lastid?: number, lasttime?: string) {
@@ -451,4 +466,25 @@ class GetPostRepliesRequest extends RequestBase {
 
 export class GetPostRepliesResult extends ResultBase {
   Replies: PostReplyInfo[];
+}
+
+class NewPostRequest extends RequestBase {
+  Content: string;
+  TagIds: string[];
+  ImageFileNames: string[];
+  RegionCode: string;
+  ExternUrl: string;
+  ExternUrlTitle: string;
+}
+
+export class NewPostResult extends ResultBase {
+
+}
+
+class DeletePostRequest extends RequestBase {
+  PostId: number;
+}
+
+export class DeletePostResult extends ResultBase {
+  PostId: number;
 }

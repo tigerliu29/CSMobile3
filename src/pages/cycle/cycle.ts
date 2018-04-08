@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
-import { CsDataProvider, PostRecordInfo, PostReplyInfo } from '../../providers/cs-data/cs-data';
+import { NavController, NavParams, LoadingController, ToastController, AlertController, ModalController, PopoverController } from 'ionic-angular';
+import { CsDataProvider, PostRecordInfo, PostReplyInfo, RegionInfo, PostTagInfo } from '../../providers/cs-data/cs-data';
 import { last } from 'rxjs/operators';
+import { NewPostPage } from '../new-post/new-post';
+import { PostSearchPage } from '../post-search/post-search';
 
 /**
  * Generated class for the CyclePage page.
@@ -22,11 +24,22 @@ export class CyclePage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public csdata: CsDataProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    public popoverCtrl: PopoverController
   ) {
   }
 
   PostRecords: PostRecordInfo[] = new Array<PostRecordInfo>();
+
+  Regions: RegionInfo[] = new Array<RegionInfo>();
+  ZYTags: PostTagInfo[] = new Array<PostTagInfo>();
+  TypeTags: PostTagInfo[] = new Array<PostTagInfo>();
+  SearchPattern: string = "";
+  Region: RegionInfo;
+  ZYTag: PostTagInfo;
+  TypeTag: PostTagInfo;
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CyclePage');
@@ -47,7 +60,15 @@ export class CyclePage {
       lastptime = br.PublishTime;
     }
 
-    this.csdata.GetPostRecords(getNew, null, null, null, null, null, lastpid, lastptime)
+    let tagids = new Array<string>();
+    if (this.ZYTag != null)
+      tagids.push(this.ZYTag.Id);
+    if (this.TypeTag != null)
+      tagids.push(this.TypeTag.Id);
+    let regionCode = null;
+    if (this.Region != null)
+      regionCode = this.Region.Code;    
+    this.csdata.GetPostRecords(getNew, tagids, regionCode, this.SearchPattern, null, null, lastpid, lastptime)
       .subscribe(
         result => {
           loader.dismiss();
@@ -55,6 +76,33 @@ export class CyclePage {
             infiniteScroll.complete();
           if (result.ResultCode == 0) {
             this.MergePosts(result.PostRecords, this.PostRecords);
+            result.Regions.forEach(
+              r => {
+                for (let i = 0; i < this.Regions.length; i++) {
+                  if (this.Regions[i].Code == r.Code)
+                    return;
+                }
+                this.Regions.push(r);
+              }
+            );
+            result.PostTags.forEach(
+              t => {
+                if (t.Category == "消息分类") {
+                  for (let i = 0; i < this.TypeTags.length; i++) {
+                    if (this.TypeTags[i].Id == t.Id)
+                      return;
+                  }
+                  this.TypeTags.push(t);
+                }
+                else if (t.Category == "专业分类") {
+                  for (let i = 0; i < this.ZYTags.length; i++) {
+                    if (this.ZYTags[i].Id == t.Id)
+                      return;
+                  }
+                  this.ZYTags.push(t);
+                }
+              }
+            );
           }
           else {
             let toast = this.toastCtrl.create({
@@ -89,10 +137,8 @@ export class CyclePage {
               target.splice(index + 1, 0, r);
               break;
             }
-            else {
-              index++;
-            }
           }
+          index++;
         } while (index <= target.length);
       }
     );
@@ -171,5 +217,81 @@ export class CyclePage {
       ]
     });
     prompt.present();
+  }
+
+  ShowSearch() {
+    let search = this.modalCtrl.create(
+      PostSearchPage,
+      {
+        Regions: this.Regions,
+        TypeTags: this.TypeTags,
+        ZYTags: this.ZYTags,
+        TypeTag: this.TypeTag,
+        ZYTag: this.ZYTag,
+        SearchPattern: this.SearchPattern,
+        Region: this.Region
+      }
+    );
+    search.onDidDismiss(
+      data => {
+        if (data != null) {
+          this.Region = data.Region;
+          this.ZYTag = data.ZYTag;
+          this.TypeTag = data.TypeTag;
+          this.SearchPattern = data.SearchPattern;
+          this.PostRecords.splice(0, this.PostRecords.length);
+          this.GetPost(false);
+        }
+      }
+    );
+    search.present();
+  }
+
+  NewPost() {
+    let modal = this.modalCtrl.create(
+      NewPostPage,
+      {
+        Regions: this.Regions,
+        TypeTags: this.TypeTags,
+        ZYTags: this.ZYTags
+      }
+    );
+    modal.onDidDismiss(
+      data => {
+        if (data) {
+          this.GetPost(true);
+        }
+      }
+    );
+    modal.present();
+  }
+
+  DeletePost(record: PostRecordInfo) {
+    let loader = this.loadingCtrl.create({
+      content: "删除帖子..."
+    });
+    loader.present();
+
+    this.csdata.DeletePost(record.Id)
+      .subscribe(
+        result => {
+          loader.dismiss();
+          if (result.ResultCode == 0) {
+            for (let i = 0; i < this.PostRecords.length; i++) {
+              if (this.PostRecords[i].Id == record.Id) {
+                this.PostRecords.splice(i, 1);
+              }
+            }
+          }
+          else {
+            let toast = this.toastCtrl.create({
+              message: result.ErrorMessage,
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+          }
+        }
+      );
   }
 }

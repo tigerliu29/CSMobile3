@@ -4,7 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { QRScanner } from '@ionic-native/qr-scanner';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -21,6 +21,8 @@ import { CyclePage } from '../pages/cycle/cycle';
 import { PersionPage } from '../pages/persion/persion';
 import { ScanModalPage } from '../pages/scan-modal/scan-modal';
 import { StimePipe } from '../pipes/stime/stime';
+import { NewPostPage } from '../pages/new-post/new-post';
+import { PostSearchPage } from '../pages/post-search/post-search';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { StimePipe } from '../pipes/stime/stime';
     CyclePage,
     PersionPage,
     ScanModalPage,
-    StimePipe
+    StimePipe,
+    NewPostPage,
+    PostSearchPage
   ],
   imports: [
     BrowserModule,
@@ -64,7 +68,9 @@ import { StimePipe } from '../pipes/stime/stime';
     AuthPage,
     CyclePage,
     PersionPage,
-    ScanModalPage
+    ScanModalPage,
+    NewPostPage,
+    PostSearchPage
   ],
   providers: [
     StatusBar,

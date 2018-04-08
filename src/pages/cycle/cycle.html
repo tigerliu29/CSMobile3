@@ -8,13 +8,13 @@
 
   <ion-navbar>
     <ion-buttons start>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="ShowSearch()">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>行业圈</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="NewPost()">
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>
@@ -36,8 +36,9 @@
           </div>
           <div>{{record.Content}}</div>
           <div>
-            <div style="float: left; font-size: xsmall; color:darkgrey; margin-top: 5px;">{{record.PublishTimeObj | stime}}</div>
+            <div style="float: left; font-size: xsmall; color:darkgrey; margin-top: 5px;">{{record.PublishTimeObj | stime}}</div>            
             <button ion-button small style="float: right;" (click)="Reply(record)">回复</button>
+            <button *ngIf="record.OwnerId == csdata.UserId" ion-button small style="float: right;" (click)="DeletePost(record)">删除</button>
           </div>
           <div *ngIf="record.Replies.length>0" style="clear: both; padding: 10px; background-color: rgb(244, 244, 244)">
             <div *ngFor="let reply of record.Replies">

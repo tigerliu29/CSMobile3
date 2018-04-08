@@ -1,5 +1,5 @@
 <!--
-  Generated template for the NewPostPage page.
+  Generated template for the PostSearchPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -7,19 +7,18 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>发新帖</ion-title>
+    <ion-title>查询帖子</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="viewCtrl.dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
+        <button ion-button icon-only (click)="viewCtrl.dismiss()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
-
+  
 </ion-header>
 
 
 <ion-content padding>
-
   <ion-list>
     <ion-item>
       <ion-label>类型</ion-label>
@@ -39,12 +38,11 @@
         <ion-option *ngFor="let r of Regions" [value]="r">{{r.Name}}</ion-option>
       </ion-select>
     </ion-item>
+    <ion-item>
+      <ion-label>查找内容</ion-label>
+      <ion-input [(ngModel)]="SearchPattern"></ion-input>
+    </ion-item>
   </ion-list>
 
-  <ion-textarea placeholder="输入内容" rows="6" [(ngModel)]="Content">
-
-  </ion-textarea>
-
-  <button ion-button full round (click)="NewPost()">发帖</button>
-
+  <button ion-button full round (click)="DoSearch()">查询</button>
 </ion-content>
