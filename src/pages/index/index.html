@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>建筑同城</ion-title>
+    <ion-title>建筑同城</ion-title>    
   </ion-navbar>
 
 </ion-header>
@@ -15,7 +15,7 @@
 
 <ion-content padding>
 
-  <ion-slides style="height: 25%" loop>
+  <ion-slides style="height: 33%" loop pager="true" loop="true" zoom="true">
     <ion-slide (click)="OpenWeb('http://www.baidu.com')">
       <img src="http://gw.alicdn.com/imgextra/TB2P8f2beuSBuNjy1XcXXcYjFXa_!!198-0-lubanu.jpg_760x760Q50s50.jpg">
     </ion-slide>
@@ -26,8 +26,9 @@
       <img src="//gw.alicdn.com/imgextra/TB2WDOBa9CWBuNjy0FhXXb6EVXa_!!19-0-lubanu.jpg_760x760Q50s50.jpg">
     </ion-slide>
   </ion-slides>
-
-  <ion-grid style="margin-top: 30px;">
+  <hr style="width: 100%; background-color: rgba(239, 239, 239, 0.75); height: 1px; border-width: 0px;">
+  <div style="margin-top: 30px; font-weight:bold;">常用应用</div>
+  <ion-grid style="margin-top: 20px;">
     <ion-row id="mainbuttons" nowrap justify-content-between>
       <div text-center (click)="Goto('行业资料')">
         <div>
