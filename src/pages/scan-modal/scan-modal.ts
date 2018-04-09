@@ -55,7 +55,7 @@ export class ScanModalPage {
       .catch((e: any) => console.log('Error is', e));
   }
 
-  ionViewWillLoad(){
+  ionViewWillLeave(){
     window.document.querySelector('body').classList.remove('transparent-body');
     this.qrScanner.hide();
   }
