@@ -63,8 +63,8 @@
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-ionic": {
         "APP_ID": "857870f9",
-        "CHANNEL_NAME": "Master",
-        "UPDATE_METHOD": "background",
+        "CHANNEL_NAME": "Production",
+        "UPDATE_METHOD": "auto",
         "WARN_DEBUG": "true",
         "UPDATE_API": "https://api.ionicjs.com",
         "MAX_STORE": "2"
