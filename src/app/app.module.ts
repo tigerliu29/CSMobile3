@@ -26,6 +26,7 @@ import { PostSearchPage } from '../pages/post-search/post-search';
 import { DocRootPage } from '../pages/doc-root/doc-root';
 import { DocLocalPage } from '../pages/doc-local/doc-local';
 import { FileTransfer } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { FileTransfer } from '@ionic-native/file-transfer';
     CsDataProvider,
     InAppBrowser,
     QRScanner,
-    FileTransfer
+    FileTransfer,
+    File
   ]
 })
 export class AppModule { }
