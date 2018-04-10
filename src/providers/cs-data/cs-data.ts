@@ -203,7 +203,7 @@ export class CsDataProvider {
 
   public DogumentList(dir: string) {
     let request = this.PrepareRequest(new DocumentListRequest());
-    request.Directory = dir;
+    request.Path = dir;
     return this.MakeRequest(DocumentListResult, this.DocumentListAddr, request);
   }
 
@@ -497,18 +497,21 @@ export class DeletePostResult extends ResultBase {
 }
 
 class DocumentListRequest extends RequestBase {
-  Directory: string;
+  Path: string;
 }
 
 export class DocumentListResult extends ResultBase {
-  Dirs: string[];
-  Files: string[];
+  Directories: DirectoryRecord[];
+  Files: FileRecord[];
 }
 
-class DocRootListRequest extends RequestBase{
-
+export class DirectoryRecord{
+  Name: string;
+  Path: string;
+  IconUrl: string;
 }
 
-export class DocRootListResult extends ResultBase{
-
+export class FileRecord{
+  Name: string;
+  DownloadUrl: string;
 }
