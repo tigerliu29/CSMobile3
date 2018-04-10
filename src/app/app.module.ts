@@ -44,7 +44,8 @@ import { FileTransfer } from '@ionic-native/file-transfer';
     NewPostPage,
     PostSearchPage,
     DocRootPage,
-    DocLocalPage
+    DocLocalPage,
+    DocPage
   ],
   imports: [
     BrowserModule,
@@ -77,7 +78,8 @@ import { FileTransfer } from '@ionic-native/file-transfer';
     NewPostPage,
     PostSearchPage,
     DocRootPage,
-    DocLocalPage
+    DocLocalPage,
+    DocPage
   ],
   providers: [
     StatusBar,
