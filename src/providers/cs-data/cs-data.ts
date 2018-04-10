@@ -504,3 +504,11 @@ export class DocumentListResult extends ResultBase {
   Dirs: string[];
   Files: string[];
 }
+
+class DocRootListRequest extends RequestBase{
+
+}
+
+export class DocRootListResult extends ResultBase{
+
+}

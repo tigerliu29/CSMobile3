@@ -93,5 +93,5 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
         <variable name="MAX_STORE" value="2" />
     </plugin>
-    <plugin name="cordova-plugin-background-download" spec="0.0.2" />
+    <plugin name="cordova-plugin-document-viewer" spec="^0.9.9" />
 </widget>
