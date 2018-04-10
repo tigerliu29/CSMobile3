@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "5.2.9",
     "@ionic-native/core": "4.6.0",
     "@ionic-native/document-viewer": "^4.7.0",
+    "@ionic-native/file": "^4.7.0",
     "@ionic-native/file-transfer": "^4.7.0",
     "@ionic-native/in-app-browser": "^4.6.0",
     "@ionic-native/native-storage": "^4.6.0",
@@ -77,7 +78,8 @@
       },
       "cordova-plugin-document-viewer": {},
       "cordova-plugin-background-download": {},
-      "cordova-plugin-file-transfer": {}
+      "cordova-plugin-file-transfer": {},
+      "cordova-plugin-file": {}
     },
     "platforms": [
       "android"
