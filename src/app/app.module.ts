@@ -23,6 +23,7 @@ import { ScanModalPage } from '../pages/scan-modal/scan-modal';
 import { StimePipe } from '../pipes/stime/stime';
 import { NewPostPage } from '../pages/new-post/new-post';
 import { PostSearchPage } from '../pages/post-search/post-search';
+import { DocRootPage } from '../pages/doc-root/doc-root';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PostSearchPage } from '../pages/post-search/post-search';
     ScanModalPage,
     StimePipe,
     NewPostPage,
-    PostSearchPage
+    PostSearchPage,
+    DocRootPage
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,8 @@ import { PostSearchPage } from '../pages/post-search/post-search';
     PersionPage,
     ScanModalPage,
     NewPostPage,
-    PostSearchPage
+    PostSearchPage,
+    DocRootPage
   ],
   providers: [
     StatusBar,

@@ -14,11 +14,32 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class DocPage {
 
+  ListRecords = new Array<DocListItem>();
+  ListLocalRecords = new Array<DocListItem>();
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DocPage');
   }
+
+  
+}
+
+class DocListItem{
+  IconUrl: string;
+  DisplayText: string;
+}
+
+class DocListDocumentItem extends DocListItem{
+  LocalPath: string;
+}
+
+class DocListDirectoryItem extends DocListItem{
+
+}
+
+class DocListParentItem extends DocListItem{
 
 }

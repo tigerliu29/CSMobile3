@@ -16,7 +16,7 @@ import { EC_Success, EC_ExceptionOccured, EC_InvalidRequest, LoginInfoName } fro
 @Injectable()
 export class CsDataProvider {
 
-  readonly BaseAddr = "http://csservice.goyo58.cn";
+  readonly BaseAddr = "http://csservice.goyo58.cn:8080";
   readonly LoginAddr = this.BaseAddr + "/User/Login";
   readonly SendRecorverCodeAddr = this.BaseAddr + "/MobilePhoneConfirmCode/Send";
   readonly ResetPasswordAddr = this.BaseAddr + "/User/ResetPassword";
@@ -29,6 +29,7 @@ export class CsDataProvider {
   readonly NewReplyAddr = this.BaseAddr + "/Post/NewReply";
   readonly GetPostRepliesAddr = this.BaseAddr + "/Post/GetPostReplies";
   readonly DeletePostAddr = this.BaseAddr + "/Post/DeletePost";
+  readonly DocumentListAddr = this.BaseAddr + "/Document/Index";
 
   UserId: string;
   UserIdentity: string;
@@ -104,7 +105,7 @@ export class CsDataProvider {
     return this.MakeRequest(GetAuthCodeResult, this.GetAuthCodeAddr, request);
   }
 
-  GetPostRecords(getNew: boolean, tagids: string[], rcodes: string[], pattern:string, replyids: number[], sgroup: string, lastpid: number, lastptitme: string) {
+  GetPostRecords(getNew: boolean, tagids: string[], rcodes: string[], pattern: string, replyids: number[], sgroup: string, lastpid: number, lastptitme: string) {
     let request = this.PrepareRequest(new GetPostRecords2Request());
     request.GetNew = getNew;
     request.RegionCodes = rcodes;
@@ -118,14 +119,14 @@ export class CsDataProvider {
     return this.MakeRequest(GetPostRecords2Result, this.GetPostRecords2Addr, request)
       .pipe(
         tap(
-          result=>{
+          result => {
             result.PostRecords
               .forEach(
-                pr=>{
+                pr => {
                   pr.PublishTimeObj = this.GetDate(pr.PublishTime);
                   pr.Replies
                     .forEach(
-                      rr=>{
+                      rr => {
                         rr.ReplyTimeObj = this.GetDate(rr.ReplyTime);
                       }
                     );
@@ -200,6 +201,12 @@ export class CsDataProvider {
     return this.MakeRequest(GetPostRepliesResult, this.GetPostRepliesAddr, request);
   }
 
+  public DogumentList(dir: string) {
+    let request = this.PrepareRequest(new DocumentListRequest());
+    request.Directory = dir;
+    return this.MakeRequest(DocumentListResult, this.DocumentListAddr, request);
+  }
+
 
   private PrepareRequest<T extends RequestBase>(request: T): T {
     request.ClientId = "";
@@ -209,7 +216,7 @@ export class CsDataProvider {
     request.UserId = this.UserId;
     request.Token = this.LoginToken;
     return request;
-  }  
+  }
 
   private MakeRequest<T extends ResultBase>(
     c: new () => T,
@@ -487,4 +494,13 @@ class DeletePostRequest extends RequestBase {
 
 export class DeletePostResult extends ResultBase {
   PostId: number;
+}
+
+class DocumentListRequest extends RequestBase {
+  Directory: string;
+}
+
+export class DocumentListResult extends ResultBase {
+  Dirs: string[];
+  Files: string[];
 }

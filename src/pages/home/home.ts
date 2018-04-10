@@ -11,6 +11,7 @@ import { DocPage } from '../doc/doc';
 import { AuthPage } from '../auth/auth';
 import { CyclePage } from '../cycle/cycle';
 import { PersionPage } from '../persion/persion';
+import { DocRootPage } from '../doc-root/doc-root';
 
 @Component({
   selector: 'page-home',
@@ -21,7 +22,7 @@ export class HomePage {
   @ViewChild(Slides) slides: Slides;
 
   indexRoot = IndexPage;
-  docRoot = DocPage;
+  docRoot = DocRootPage;
   authRoot = AuthPage;
   cycleRoot = CyclePage
   personRoot = PersionPage;
