@@ -25,7 +25,7 @@ export class NewPostPage {
   Content: string = "";
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
@@ -60,7 +60,7 @@ export class NewPostPage {
       toast.present();
     }
 
-    if(this.Regions == null){
+    if (this.Regions == null) {
       let toast = this.toastCtrl.create({
         message: "请选择地区。",
         duration: 3000,
@@ -69,7 +69,7 @@ export class NewPostPage {
       toast.present();
     }
 
-    if(this.Content.trim().length == 0){
+    if (this.Content.trim().length == 0) {
       let toast = this.toastCtrl.create({
         message: "请输入帖子内容",
         duration: 3000,

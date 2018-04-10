@@ -24,6 +24,7 @@ import { StimePipe } from '../pipes/stime/stime';
 import { NewPostPage } from '../pages/new-post/new-post';
 import { PostSearchPage } from '../pages/post-search/post-search';
 import { DocRootPage } from '../pages/doc-root/doc-root';
+import { DocLocalPage } from '../pages/doc-local/doc-local';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { DocRootPage } from '../pages/doc-root/doc-root';
     StimePipe,
     NewPostPage,
     PostSearchPage,
-    DocRootPage
+    DocRootPage,
+    DocLocalPage
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ import { DocRootPage } from '../pages/doc-root/doc-root';
     ScanModalPage,
     NewPostPage,
     PostSearchPage,
-    DocRootPage
+    DocRootPage,
+    DocLocalPage
   ],
   providers: [
     StatusBar,
