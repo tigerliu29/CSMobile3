@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { File } from '@ionic-native/file';
+import { DocumentViewerOptions, DocumentViewer } from '@ionic-native/document-viewer';
 
 /**
  * Generated class for the DocLocalPage page.
@@ -14,11 +16,43 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class DocLocalPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  LocalFileList : LocalDocItem[] = new Array<LocalDocItem>();
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public file: File,
+    public docViewer: DocumentViewer
+  ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DocLocalPage');
+    this.file.listDir(this.file.externalRootDirectory, "行业资料")
+      .then(
+        enties => {
+          enties.forEach(i => {
+            if (i.isFile) {
+              let li = new LocalDocItem();
+              li.Name = i.name;
+              li.LocalPath = i.fullPath;
+              this.LocalFileList.push(li);
+            }
+          });
+        }
+      );
   }
 
+  ItemClick(item: LocalDocItem){
+    const options: DocumentViewerOptions = {
+      title: item.Name
+    }
+    this.docViewer.viewDocument(item.LocalPath, 'application/pdf', options)
+  }
+
+}
+
+class LocalDocItem {
+  Name: string;
+  LocalPath: string;
 }

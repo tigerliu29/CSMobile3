@@ -120,7 +120,8 @@ export class DocPage {
   }
 
   StartDownload(item: ListItem) {
-    item.Downloading = true;
+    item.Percentage = 0;
+    item.Downloading = true;    
     let target = this.LocalDir + item.Data.Name;
     const fileTransfer: FileTransferObject = this.transfer.create();
     fileTransfer.onProgress(e => {

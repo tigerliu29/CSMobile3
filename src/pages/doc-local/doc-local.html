@@ -14,5 +14,11 @@
 
 
 <ion-content padding>
-
+    <ion-list>
+        <button *ngFor="let r of LocalFileList" ion-item (click)="ItemClick(r)" detail-none>
+          <ion-icon name="document" item-start></ion-icon>
+          {{r.Name}}
+          <ion-icon name="book" item-end></ion-icon>
+        </button>
+      </ion-list>
 </ion-content>
