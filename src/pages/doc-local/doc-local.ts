@@ -16,7 +16,7 @@ import { DocumentViewerOptions, DocumentViewer } from '@ionic-native/document-vi
 })
 export class DocLocalPage {
 
-  LocalFileList : LocalDocItem[] = new Array<LocalDocItem>();
+  LocalFileList: LocalDocItem[] = new Array<LocalDocItem>();
 
   constructor(
     public navCtrl: NavController,
@@ -43,11 +43,18 @@ export class DocLocalPage {
       );
   }
 
-  ItemClick(item: LocalDocItem){
+  ItemClick(item: LocalDocItem) {
+    console.log("ItemClick");
     const options: DocumentViewerOptions = {
       title: item.Name
+    }    
+    if (this.docViewer.canViewDocument(item.LocalPath, 'application/pdf', options)) {
+      console.log("Can view");
+      this.docViewer.viewDocument(item.LocalPath, 'application/pdf', options);
     }
-    this.docViewer.viewDocument(item.LocalPath, 'application/pdf', options)
+    else{
+      console.log("Can not view");
+    }
   }
 
 }
