@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { DocumentViewer } from '@ionic-native/document-viewer';
+import { FileOpener } from '@ionic-native/file-opener';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -47,7 +48,7 @@ import { File } from '@ionic-native/file';
     PostSearchPage,
     DocRootPage,
     DocLocalPage,
-    DocPage
+    DocPage    
   ],
   imports: [
     BrowserModule,
@@ -94,7 +95,8 @@ import { File } from '@ionic-native/file';
     QRScanner,
     FileTransfer,
     File,
-    DocumentViewer    
+    DocumentViewer,
+    FileOpener   
   ]
 })
 export class AppModule { }

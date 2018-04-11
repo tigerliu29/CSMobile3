@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 import { DocumentViewerOptions, DocumentViewer } from '@ionic-native/document-viewer';
+import { FileOpener } from '@ionic-native/file-opener';
 
 /**
  * Generated class for the DocLocalPage page.
@@ -22,7 +23,7 @@ export class DocLocalPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public file: File,
-    public docViewer: DocumentViewer
+    public opener: FileOpener
   ) {
   }
 
@@ -45,16 +46,7 @@ export class DocLocalPage {
 
   ItemClick(item: LocalDocItem) {
     alert("ItemClick");
-    const options: DocumentViewerOptions = {
-      title: item.Name
-    }    
-    if (this.docViewer.canViewDocument(item.LocalPath, 'application/pdf', options)) {
-      alert("Can view");
-      this.docViewer.viewDocument(item.LocalPath, 'application/pdf', options);
-    }
-    else{
-      alert("Can not view");
-    }
+    this.opener.open(item.LocalPath, 'application/pdf');
   }
 
 }
