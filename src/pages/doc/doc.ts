@@ -164,6 +164,7 @@ class ListItem {
   constructor(data: any, type: string, localPath?: string) {
     this.Data = data;
     this.Type = type;
+    this.LocalPath = localPath;
     switch (this.Type) {
       case "Directory":
         this.StartIcon = "folder";
