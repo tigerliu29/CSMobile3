@@ -5,7 +5,7 @@ import { CsDataProvider, DirectoryRecord } from '../../providers/cs-data/cs-data
 import { EC_Success } from '../../app/app.module';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { File } from '@ionic-native/file';
-import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
+import { FileOpener } from '@ionic-native/file-opener';
 
 /**
  * Generated class for the DocPage page.
@@ -39,7 +39,7 @@ export class DocPage {
     public transfer: FileTransfer,
     public file: File,
     public cdr: ChangeDetectorRef,
-    public docViewer: DocumentViewer
+    public opener: FileOpener
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
@@ -63,10 +63,10 @@ export class DocPage {
             for (let i = 0; i < result.Files.length; i++) {
               let filePath;
               alert(this.LocalDir);
-              alert(result.Files[i].Name);
-              alert(this.LocalDir + result.Files[i].Name)
+              alert(result.Files[i].Name);              
               this.file.checkFile(this.LocalDir, result.Files[i].Name)
                 .then(f => {
+                  alert(this.LocalDir + result.Files[i].Name);
                   filePath = this.LocalDir + result.Files[i].Name;
                 });
               this.ListRecords.push(new ListItem(result.Files[i], "File", filePath));
@@ -111,10 +111,16 @@ export class DocPage {
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
     else {
       if (item.LocalPath != null && item.LocalPath.length > 0) {
-        const options: DocumentViewerOptions = {
-          title: item.Data.Name
-        }
-        this.docViewer.viewDocument(item.LocalPath, 'application/pdf', options)
+        this.opener.open(item.LocalPath, 'application/pdf')
+      .catch(reason => {
+        let msg = "";
+        Object.keys(reason).forEach(
+          k=>{
+            msg = msg + k + ":" + reason[k] + "\n";
+          }
+        )
+        alert(msg);
+      });
       }
       else {
         this.StartDownload(item);
