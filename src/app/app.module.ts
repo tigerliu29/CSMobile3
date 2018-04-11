@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { QRScanner } from '@ionic-native/qr-scanner';
+import { DocumentViewer } from '@ionic-native/document-viewer';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -92,7 +93,8 @@ import { File } from '@ionic-native/file';
     InAppBrowser,
     QRScanner,
     FileTransfer,
-    File
+    File,
+    DocumentViewer    
   ]
 })
 export class AppModule { }

@@ -5,6 +5,7 @@ import { CsDataProvider, DirectoryRecord } from '../../providers/cs-data/cs-data
 import { EC_Success } from '../../app/app.module';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { File } from '@ionic-native/file';
+import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 
 /**
  * Generated class for the DocPage page.
@@ -37,7 +38,8 @@ export class DocPage {
     public toastCtrl: ToastController,
     public transfer: FileTransfer,
     public file: File,
-    private cdr: ChangeDetectorRef
+    public cdr: ChangeDetectorRef,
+    public docViewer: DocumentViewer
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
@@ -59,7 +61,12 @@ export class DocPage {
             }
 
             for (let i = 0; i < result.Files.length; i++) {
-              this.ListRecords.push(new ListItem(result.Files[i], "File"));
+              let filePath;
+              this.file.checkFile(this.LocalDir, result.Files[i].Name)
+                .then(f => {
+                  filePath = this.LocalDir + result.Files[i].Name;
+                });
+              this.ListRecords.push(new ListItem(result.Files[i], "File", filePath));
             }
 
             this.ContinueLoad();
@@ -99,8 +106,17 @@ export class DocPage {
   ItemClick(item: ListItem) {
     if (item.Type == "Directory")
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
-    else
-      this.StartDownload(item);
+    else {
+      if (item.LocalPath != null && item.LocalPath.length > 0) {
+        const options: DocumentViewerOptions = {
+          title: item.Data.Name
+        }
+        this.docViewer.viewDocument(item.LocalPath, 'application/pdf', options)
+      }
+      else {
+        this.StartDownload(item);
+      }
+    }
   }
 
   StartDownload(item: ListItem) {
@@ -133,8 +149,9 @@ class ListItem {
   Percentage: number;
   Type: string;
   Downloading: boolean;
+  LocalPath: string;
 
-  constructor(data: any, type: string) {
+  constructor(data: any, type: string, localPath?: string) {
     this.Data = data;
     this.Type = type;
     switch (this.Type) {
@@ -145,6 +162,7 @@ class ListItem {
       case "File":
         this.StartIcon = "document";
         this.EndIcon = "download";
+        this.LocalPath = localPath;
         break;
     }
   }
