@@ -35,8 +35,9 @@ export class DocLocalPage {
           enties.forEach(i => {
             if (i.isFile) {
               let li = new LocalDocItem();
-              li.Name = i.name;
+              li.Name = i.name;              
               li.LocalPath = i.fullPath;
+              alert(li.LocalPath);
               this.LocalFileList.push(li);
             }
           });
