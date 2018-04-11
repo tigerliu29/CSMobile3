@@ -62,8 +62,6 @@ export class DocPage {
 
             for (let i = 0; i < result.Files.length; i++) {
               let filePath;
-              alert(this.LocalDir);
-              alert(result.Files[i].Name);              
               this.file.checkFile(this.LocalDir, result.Files[i].Name)
                 .then(f => {
                   alert(this.LocalDir + result.Files[i].Name);
@@ -110,17 +108,18 @@ export class DocPage {
     if (item.Type == "Directory")
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
     else {
+      alert(item.LocalPath);
       if (item.LocalPath != null && item.LocalPath.length > 0) {
         this.opener.open(item.LocalPath, 'application/pdf')
-      .catch(reason => {
-        let msg = "";
-        Object.keys(reason).forEach(
-          k=>{
-            msg = msg + k + ":" + reason[k] + "\n";
-          }
-        )
-        alert(msg);
-      });
+          .catch(reason => {
+            let msg = "";
+            Object.keys(reason).forEach(
+              k => {
+                msg = msg + k + ":" + reason[k] + "\n";
+              }
+            )
+            alert(msg);
+          });
       }
       else {
         this.StartDownload(item);
@@ -130,17 +129,18 @@ export class DocPage {
 
   StartDownload(item: ListItem) {
     item.Percentage = 0;
-    item.Downloading = true;    
+    item.Downloading = true;
     let target = this.LocalDir + item.Data.Name;
     const fileTransfer: FileTransferObject = this.transfer.create();
     fileTransfer.onProgress(e => {
-      item.Percentage = Math.round(e.loaded / e.total);
+      item.Percentage = Math.round(e.loaded / e.total * 100);
       this.cdr.detectChanges();
     });
     fileTransfer
       .download(item.Data.DownloadUrl, target)
       .then(i => {
         item.Downloading = false;
+        item.LocalPath = target;
       })
       .catch(i => {
         item.Downloading = false;

@@ -37,7 +37,6 @@ export class DocLocalPage {
               let li = new LocalDocItem();
               li.Name = i.name;              
               li.LocalPath = this.file.externalRootDirectory + "行业资料/" + i.name;
-              alert(li.LocalPath);
               this.LocalFileList.push(li);
             }
           });
