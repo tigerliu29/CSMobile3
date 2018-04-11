@@ -44,16 +44,16 @@ export class DocLocalPage {
   }
 
   ItemClick(item: LocalDocItem) {
-    console.log("ItemClick");
+    alert("ItemClick");
     const options: DocumentViewerOptions = {
       title: item.Name
     }    
     if (this.docViewer.canViewDocument(item.LocalPath, 'application/pdf', options)) {
-      console.log("Can view");
+      alert("Can view");
       this.docViewer.viewDocument(item.LocalPath, 'application/pdf', options);
     }
     else{
-      console.log("Can not view");
+      alert("Can not view");
     }
   }
 
