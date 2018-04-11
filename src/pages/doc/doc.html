@@ -19,7 +19,7 @@
       <ion-icon *ngIf="r.StartIcon.length > 0" [name]="r.StartIcon" item-start></ion-icon>
       {{r.Data.Name}}
       <div item-end *ngIf="r.Downloading">{{r.Percentage}}%</div>
-      <ion-icon *ngIf="r.EndIcon.length > 0 && !r.Downloading" [name]="r.EndIcon" item-end></ion-icon>
+      <ion-icon *ngIf="r.EndIcon.length > 0 && !r.Downloading && (r.LocalPath==null || r.LocalPath.length == 0)" [name]="r.EndIcon" item-end></ion-icon>
       <ion-icon *ngIf="r.LocalPath!=null && r.LocalPath.length > 0 && !r.Downloading" name="book" item-end></ion-icon>
     </button>
   </ion-list>
