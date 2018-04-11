@@ -46,7 +46,16 @@ export class DocLocalPage {
 
   ItemClick(item: LocalDocItem) {
     alert("ItemClick");
-    this.opener.open(item.LocalPath, 'application/pdf');
+    this.opener.open(item.LocalPath, 'application/pdf')
+      .catch(reason => {
+        let msg = "";
+        Object.keys(reason).forEach(
+          k=>{
+            msg = msg + k + ":" + reason[k] + "\n";
+          }
+        )
+        alert(msg);
+      });
   }
 
 }
