@@ -61,12 +61,17 @@ export class DocPage {
             }
 
             for (let i = 0; i < result.Files.length; i++) {
+              let filePath = this.LocalDir + result.Files[i].Name;
+              alert(filePath);
               this.file.checkFile(this.LocalDir, result.Files[i].Name)
                 .then(f => {
-                  let filePath = this.LocalDir + result.Files[i].Name;
+                  alert("then");
+                  alert(this);                  
                   this.ListRecords.push(new ListItem(result.Files[i], "File", filePath));
                 })
                 .catch(f=>{
+                  alert("catch");
+                  alert(this);
                   this.ListRecords.push(new ListItem(result.Files[i], "File"));
                 });              
             }
