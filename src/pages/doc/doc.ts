@@ -62,6 +62,9 @@ export class DocPage {
 
             for (let i = 0; i < result.Files.length; i++) {
               let filePath;
+              alert(this.LocalDir);
+              alert(result.Files[i].Name);
+              alert(this.LocalDir + result.Files[i].Name)
               this.file.checkFile(this.LocalDir, result.Files[i].Name)
                 .then(f => {
                   filePath = this.LocalDir + result.Files[i].Name;
