@@ -61,20 +61,8 @@ export class DocPage {
             }
 
             for (let i = 0; i < result.Files.length; i++) {
-              let filePath = this.LocalDir + result.Files[i].Name;
-              alert(filePath);
-              this.file.checkFile(this.LocalDir, result.Files[i].Name)
-                .then(f => {
-                  alert("then");
-                  alert(this);                  
-                  this.ListRecords.push(new ListItem(result.Files[i], "File", filePath));
-                })
-                .catch(f=>{
-                  alert("catch");
-                  alert(this);
-                  this.ListRecords.push(new ListItem(result.Files[i], "File"));
-                });              
-            }            
+              this.ListRecords.push(new ListItem(result.Files[i], "File"));
+            }
             this.ContinueLoad();
           }
           else {
@@ -95,12 +83,13 @@ export class DocPage {
   }
 
   ContinueLoad(infiniteScroll?) {
-    alert(this.ListRecords.length);
-    alert(this.DisplayRecords.length);
-    
     let index = this.DisplayRecords.length;
     let count = 0;
     while (index < this.ListRecords.length && count < 20) {
+      this.file.checkFile(this.LocalDir, this.ListRecords[index].Name)
+        .then(() => {
+          this.ListRecords[index].localPath = this.LocalDir + this.ListRecords[index].Name;
+        });
       this.DisplayRecords.push(this.ListRecords[index]);
       index++;
       count++;
@@ -110,14 +99,12 @@ export class DocPage {
         infiniteScroll.complete();
       }
     }
-    alert(this.DisplayRecords.length);
   }
 
   ItemClick(item: ListItem) {
     if (item.Type == "Directory")
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
     else {
-      alert(item.LocalPath);
       if (item.LocalPath != null && item.LocalPath.length > 0) {
         this.opener.open(item.LocalPath, 'application/pdf')
           .catch(reason => {
