@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { CsDataProvider, DirectoryRecord } from '../../providers/cs-data/cs-data';
@@ -37,7 +37,7 @@ export class DocPage {
     public toastCtrl: ToastController,
     public transfer: FileTransfer,
     public file: File,
-
+    private cdr: ChangeDetectorRef
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
@@ -107,11 +107,12 @@ export class DocPage {
     item.Downloading = true;
     let target = this.LocalDir + item.Data.Name;
     const fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.onProgress(e=>{
+    fileTransfer.onProgress(e => {
       item.Percentage = Math.round(e.loaded / e.total);
+      this.cdr.detectChanges();
     });
     fileTransfer
-      .download(item.Data.DownloadUrl, target)      
+      .download(item.Data.DownloadUrl, target)
       .then(i => {
         item.Downloading = false;
       })
