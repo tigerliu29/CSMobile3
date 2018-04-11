@@ -74,8 +74,7 @@ export class DocPage {
                   alert(this);
                   this.ListRecords.push(new ListItem(result.Files[i], "File"));
                 });              
-            }
-
+            }            
             this.ContinueLoad();
           }
           else {
@@ -96,6 +95,9 @@ export class DocPage {
   }
 
   ContinueLoad(infiniteScroll?) {
+    alert(this.ListRecords.length);
+    alert(this.DisplayRecords.length);
+    
     let index = this.DisplayRecords.length;
     let count = 0;
     while (index < this.ListRecords.length && count < 20) {
@@ -105,9 +107,10 @@ export class DocPage {
     }
     if (index >= this.ListRecords.length) {
       if (infiniteScroll != null) {
-
+        infiniteScroll.complete();
       }
     }
+    alert(this.DisplayRecords.length);
   }
 
   ItemClick(item: ListItem) {
