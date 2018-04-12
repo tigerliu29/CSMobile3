@@ -514,4 +514,5 @@ export class DirectoryRecord{
 export class FileRecord{
   Name: string;
   DownloadUrl: string;
+  Size: Number;
 }
