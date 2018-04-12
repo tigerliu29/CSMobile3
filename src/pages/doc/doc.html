@@ -20,9 +20,6 @@
       <div>
         {{r.Data.Name}}
       </div>
-      <div>
-        {{r.Data.Size}}
-      </div>
       <div item-end *ngIf="r.Downloading">{{r.Percentage}}%</div>
       <ion-icon *ngIf="r.EndIcon.length > 0 && !r.Downloading && (r.LocalPath==null || r.LocalPath.length == 0)" [name]="r.EndIcon"
         item-end></ion-icon>
