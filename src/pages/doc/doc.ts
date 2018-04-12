@@ -6,6 +6,7 @@ import { EC_Success } from '../../app/app.module';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
+import { Platform } from 'ionic-angular';
 
 /**
  * Generated class for the DocPage page.
@@ -27,7 +28,12 @@ export class DocPage {
   DisplayRecords = [];
 
   get LocalDir() {
-    return this.file.externalRootDirectory + "行业资料/";
+    if (this.plt.is("ios")) {
+      return this.file.documentsDirectory + "行业资料/";
+    }
+    else {
+      return this.file.externalRootDirectory + "行业资料/";
+    }    
   }
 
   constructor(
@@ -39,7 +45,8 @@ export class DocPage {
     public transfer: FileTransfer,
     public file: File,
     public cdr: ChangeDetectorRef,
-    public opener: FileOpener
+    public opener: FileOpener,
+    public plt: Platform
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
@@ -145,7 +152,7 @@ export class DocPage {
         },
         reason => {
           let msg = "";
-          Object.keys(reason).forEach(k=>{
+          Object.keys(reason).forEach(k => {
             msg = msg + k + ":" + reason[k] + "\n";
           })
           alert(msg);

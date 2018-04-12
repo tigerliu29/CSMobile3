@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 import { DocumentViewerOptions, DocumentViewer } from '@ionic-native/document-viewer';
 import { FileOpener } from '@ionic-native/file-opener';
@@ -18,25 +18,33 @@ import { FileOpener } from '@ionic-native/file-opener';
 export class DocLocalPage {
 
   LocalFileList: LocalDocItem[] = new Array<LocalDocItem>();
-
+  get LocalRootDir() {
+    if (this.plt.is("ios")) {
+      return this.file.documentsDirectory;
+    }
+    else {
+      return this.file.externalRootDirectory;
+    }
+  }
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public file: File,
-    public opener: FileOpener
+    public opener: FileOpener,
+    public plt: Platform
   ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DocLocalPage');
-    this.file.listDir(this.file.externalRootDirectory, "行业资料")
+    this.file.listDir(this.LocalRootDir, "行业资料")
       .then(
         enties => {
           enties.forEach(i => {
             if (i.isFile) {
               let li = new LocalDocItem();
-              li.Name = i.name;              
-              li.LocalPath = this.file.externalRootDirectory + "行业资料/" + i.name;
+              li.Name = i.name;
+              li.LocalPath = this.LocalRootDir + "行业资料/" + i.name;
               this.LocalFileList.push(li);
             }
           });
@@ -49,7 +57,7 @@ export class DocLocalPage {
       .catch(reason => {
         let msg = "";
         Object.keys(reason).forEach(
-          k=>{
+          k => {
             msg = msg + k + ":" + reason[k] + "\n";
           }
         )
