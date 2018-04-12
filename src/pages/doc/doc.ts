@@ -29,11 +29,11 @@ export class DocPage {
 
   get LocalDir() {
     if (this.plt.is("ios")) {
-      return this.file.externalDataDirectory + "行业资料/";
+      return this.file.dataDirectory + "行业资料/";
     }
     else {
       return this.file.externalRootDirectory + "行业资料/";
-    }    
+    }
   }
 
   constructor(
@@ -50,6 +50,12 @@ export class DocPage {
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
+    this.file.checkDir(this.file.dataDirectory, "行业资料")
+      .catch(
+        () => {
+          this.file.createDir(this.file.dataDirectory, "行业资料", true);
+        }
+      );
   }
 
   ionViewDidLoad() {
@@ -60,7 +66,7 @@ export class DocPage {
     loader.present();
     this.csdata.DogumentList(this.Path)
       .subscribe(
-        result => {                    
+        result => {
           if (result.ResultCode == EC_Success) {
             for (let i = 0; i < result.Directories.length; i++) {
               this.ListRecords.push(new ListItem(result.Directories[i], "Directory"));
