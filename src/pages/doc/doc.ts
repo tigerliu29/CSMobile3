@@ -149,6 +149,7 @@ export class DocPage {
       item.Percentage = Math.round(e.loaded / e.total * 100);
       this.cdr.detectChanges();
     });
+    alert(item.Data.DownloadUrl);
     fileTransfer
       .download(item.Data.DownloadUrl, target)
       .then(
