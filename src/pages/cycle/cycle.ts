@@ -67,11 +67,11 @@ export class CyclePage {
       tagids.push(this.TypeTag.Id);
     let regionCode = null;
     if (this.Region != null)
-      regionCode = this.Region.Code;    
+      regionCode = this.Region.Code;
     this.csdata.GetPostRecords(getNew, tagids, regionCode, this.SearchPattern, null, null, lastpid, lastptime)
       .subscribe(
         result => {
-          loader.dismiss();
+
           if (infiniteScroll != null)
             infiniteScroll.complete();
           if (result.ResultCode == 0) {
@@ -112,6 +112,7 @@ export class CyclePage {
             });
             toast.present();
           }
+          loader.dismiss();
         }
       );
   }
@@ -176,14 +177,14 @@ export class CyclePage {
             loader.present();
             this.csdata.NewReply(record.Id, data["Content"], this.csdata.UserId)
               .subscribe(r => {
-                if (r.ResultCode != 0) {
-                  loader.dismiss();
+                if (r.ResultCode != 0) {                  
                   let toast = this.toastCtrl.create({
                     message: r.ErrorMessage,
                     duration: 3000,
                     position: 'top'
                   });
                   toast.present();
+                  loader.dismiss();
                 }
                 else {
                   let lastid = null;
@@ -194,8 +195,7 @@ export class CyclePage {
                     lasttime = r.ReplyTime;
                   }
                   this.csdata.GetReply(true, record.Id, lastid, lasttime)
-                    .subscribe(r => {
-                      loader.dismiss();
+                    .subscribe(r => {                      
                       if (r.ResultCode != 0) {
                         let toast = this.toastCtrl.create({
                           message: r.ErrorMessage,
@@ -209,6 +209,7 @@ export class CyclePage {
                           record.Replies.splice(0, 0, r.Replies[i]);
                         }
                       }
+                      loader.dismiss();
                     });
                 }
               });
@@ -274,8 +275,7 @@ export class CyclePage {
 
     this.csdata.DeletePost(record.Id)
       .subscribe(
-        result => {
-          loader.dismiss();
+        result => {          
           if (result.ResultCode == 0) {
             for (let i = 0; i < this.PostRecords.length; i++) {
               if (this.PostRecords[i].Id == record.Id) {
@@ -291,6 +291,7 @@ export class CyclePage {
             });
             toast.present();
           }
+          loader.dismiss();
         }
       );
   }

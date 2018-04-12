@@ -60,8 +60,7 @@ export class DocPage {
     loader.present();
     this.csdata.DogumentList(this.Path)
       .subscribe(
-        result => {
-          loader.dismiss();
+        result => {                    
           if (result.ResultCode == EC_Success) {
             for (let i = 0; i < result.Directories.length; i++) {
               this.ListRecords.push(new ListItem(result.Directories[i], "Directory"));
@@ -80,6 +79,7 @@ export class DocPage {
             });
             toast.present();
           }
+          loader.dismiss();
         }
       );
   }
