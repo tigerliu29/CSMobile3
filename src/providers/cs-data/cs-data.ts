@@ -16,7 +16,7 @@ import { EC_Success, EC_ExceptionOccured, EC_InvalidRequest, LoginInfoName } fro
 @Injectable()
 export class CsDataProvider {
 
-  readonly BaseAddr = "http://csservice.goyo58.cn";
+  readonly BaseAddr = "http://csservice.goyo58.cn:8080";
   readonly LoginAddr = this.BaseAddr + "/User/Login";
   readonly SendRecorverCodeAddr = this.BaseAddr + "/MobilePhoneConfirmCode/Send";
   readonly ResetPasswordAddr = this.BaseAddr + "/User/ResetPassword";
