@@ -16,14 +16,8 @@
 <ion-content padding>
 
   <ion-slides style="height: 33%" loop pager="true" loop="true" zoom="true">
-    <ion-slide (click)="OpenWeb('http://www.baidu.com')">
-      <img src="http://gw.alicdn.com/imgextra/TB2P8f2beuSBuNjy1XcXXcYjFXa_!!198-0-lubanu.jpg_760x760Q50s50.jpg">
-    </ion-slide>
-    <ion-slide (click)="OpenWeb('http://www.baidu.com')">
-      <img src="http://img.alicdn.com/bao/uploaded/TB1nY1EaYuWBuNjSszgSuv8jVXa.jpg_760x760Q50s50.jpg">
-    </ion-slide>
-    <ion-slide (click)="OpenWeb('http://www.baidu.com')">
-      <img src="http://gw.alicdn.com/imgextra/TB2WDOBa9CWBuNjy0FhXXb6EVXa_!!19-0-lubanu.jpg_760x760Q50s50.jpg">
+    <ion-slide *ngFor="let b of Banners" (click)="OpenWeb(b.TargetUrl)">
+      <img [src]="b.ImageUrl">
     </ion-slide>
   </ion-slides>
   <hr style="width: 100%; background-color: rgba(239, 239, 239, 0.75); height: 1px; border-width: 0px;">

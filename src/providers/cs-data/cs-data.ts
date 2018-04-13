@@ -30,6 +30,7 @@ export class CsDataProvider {
   readonly GetPostRepliesAddr = this.BaseAddr + "/Post/GetPostReplies";
   readonly DeletePostAddr = this.BaseAddr + "/Post/DeletePost";
   readonly DocumentListAddr = this.BaseAddr + "/Document/Index";
+  readonly IndexBannerAddr = this.BaseAddr + "/MobileData/IndexBanner";
 
   UserId: string;
   UserIdentity: string;
@@ -87,6 +88,11 @@ export class CsDataProvider {
     request.ConfirmCode = code;
     request.NewPassword = pwd;
     return this.MakeRequest(ResetPasswordResult, this.ResetPasswordAddr, request);
+  }
+
+  IndexBanner() {
+    let request = this.PrepareRequest(new IndexBannerRequest());
+    return this.MakeRequest(IndexBannerResult, this.IndexBannerAddr, request);
   }
 
   Register(userName: string, pwd: string, phone: string, code: string, nickname: string) {
@@ -505,14 +511,27 @@ export class DocumentListResult extends ResultBase {
   Files: FileRecord[];
 }
 
-export class DirectoryRecord{
+export class DirectoryRecord {
   Name: string;
   Path: string;
   IconUrl: string;
 }
 
-export class FileRecord{
+export class FileRecord {
   Name: string;
   DownloadUrl: string;
   Size: Number;
+}
+
+class IndexBannerRequest extends RequestBase{
+
+}
+
+export class IndexBannerResult extends ResultBase{
+  Banners: IndexBannerSetting[];
+}
+
+export class IndexBannerSetting {
+  ImageUrl: string;
+  TargetUrl: string;
 }
