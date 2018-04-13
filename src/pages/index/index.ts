@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
@@ -18,7 +18,8 @@ export class IndexPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public iab: InAppBrowser
+    public iab: InAppBrowser,
+    public loadingCtrl: LoadingController
   ) {
   }
 
@@ -48,5 +49,22 @@ export class IndexPage {
     }
 
   }
+
+  TestLoading() {
+
+    let loader = this.loadingCtrl.create({
+      content: "获取数据..."
+    });
+    loader.present();
+    this.test();
+  }
+
+  async test() {
+    await this.sleep(3000)
+  }
+  
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }  
 
 }
