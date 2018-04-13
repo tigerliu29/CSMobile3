@@ -110,7 +110,6 @@ export class DocPage {
   }
 
   ItemClick(item: ListItem) {
-    alert("Item Click")
     if (item.Type == "Directory")
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
     else {
@@ -133,18 +132,14 @@ export class DocPage {
   }
 
   StartDownload(item: ListItem) {
-    alert("Start Download")
     item.Percentage = 0;
     item.Downloading = true;
     let target = this.LocalDir + item.Data.Name;
-    alert(this.LocalDir);
-    alert(target);
     const fileTransfer: FileTransferObject = this.transfer.create();
     fileTransfer.onProgress(e => {
       item.Percentage = Math.round(e.loaded / e.total * 100);
       this.cdr.detectChanges();
     });
-    alert(item.Data.DownloadUrl);
     fileTransfer
       .download(item.Data.DownloadUrl, target)
       .then(
