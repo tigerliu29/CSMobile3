@@ -50,12 +50,6 @@ export class DocPage {
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
-    this.file.checkDir(this.file.dataDirectory, "行业资料")
-      .catch(
-        () => {
-          this.file.createDir(this.file.dataDirectory, "行业资料", true);
-        }
-      );
   }
 
   ionViewDidLoad() {
@@ -102,6 +96,7 @@ export class DocPage {
       this.file.checkFile(this.LocalDir, this.ListRecords[index].Name)
         .then(() => {
           this.ListRecords[index].localPath = this.LocalDir + this.ListRecords[index].Name;
+          this.cdr.detectChanges();
         });
       this.DisplayRecords.push(this.ListRecords[index]);
       index++;
