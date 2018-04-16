@@ -14,19 +14,23 @@
 
 
 <ion-content padding>
-  <ion-list>
-    <button *ngFor="let r of DisplayRecords" ion-item (click)="ItemClick(r)" detail-none>
-      <ion-icon *ngIf="r.StartIcon.length > 0" [name]="r.StartIcon" item-start></ion-icon>
-      <div>
-        {{r.Data.Name}}
-      </div>
-      <div item-end *ngIf="r.Downloading">{{r.Percentage}}%</div>
-      <ion-icon *ngIf="r.EndIcon.length > 0 && !r.Downloading && (r.LocalPath==null || r.LocalPath.length == 0)" [name]="r.EndIcon"
-        item-end></ion-icon>
-      <ion-icon *ngIf="r.LocalPath!=null && r.LocalPath.length > 0 && !r.Downloading" name="book" item-end></ion-icon>
-    </button>
-  </ion-list>
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-
+  <ng-container *ngIf="!plt.is('ios')">
+    <ion-list>
+      <button *ngFor="let r of DisplayRecords" ion-item (click)="ItemClick(r)" detail-none>
+        <ion-icon *ngIf="r.StartIcon.length > 0" [name]="r.StartIcon" item-start></ion-icon>
+        <div>
+          {{r.Data.Name}}
+        </div>
+        <div item-end *ngIf="r.Downloading">{{r.Percentage}}%</div>
+        <ion-icon *ngIf="r.EndIcon.length > 0 && !r.Downloading && (r.LocalPath==null || r.LocalPath.length == 0)" [name]="r.EndIcon"
+          item-end></ion-icon>
+        <ion-icon *ngIf="r.LocalPath!=null && r.LocalPath.length > 0 && !r.Downloading" name="book" item-end></ion-icon>
+      </button>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  </ng-container>
+  <ng-container *ngIf="plt.is('ios')">
+    <ion-card>功能建设中，敬请期待！</ion-card>
+  </ng-container>
   </ion-infinite-scroll>
 </ion-content>

@@ -54,34 +54,38 @@ export class DocPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DocPage');
-    let loader = this.loadingCtrl.create({
-      content: "获取数据..."
-    });
-    loader.present();
-    this.csdata.DogumentList(this.Path)
-      .subscribe(
-        result => {
-          if (result.ResultCode == EC_Success) {
-            for (let i = 0; i < result.Directories.length; i++) {
-              this.ListRecords.push(new ListItem(result.Directories[i], "Directory"));
-            }
+    if (this.plt.is("ios")) {
+    }
+    else {
+      let loader = this.loadingCtrl.create({
+        content: "获取数据..."
+      });
+      loader.present();
+      this.csdata.DogumentList(this.Path)
+        .subscribe(
+          result => {
+            if (result.ResultCode == EC_Success) {
+              for (let i = 0; i < result.Directories.length; i++) {
+                this.ListRecords.push(new ListItem(result.Directories[i], "Directory"));
+              }
 
-            for (let i = 0; i < result.Files.length; i++) {
-              this.ListRecords.push(new ListItem(result.Files[i], "File"));
+              for (let i = 0; i < result.Files.length; i++) {
+                this.ListRecords.push(new ListItem(result.Files[i], "File"));
+              }
+              this.ContinueLoad();
             }
-            this.ContinueLoad();
+            else {
+              let toast = this.toastCtrl.create({
+                message: result.ErrorMessage,
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+            }
+            loader.dismiss();
           }
-          else {
-            let toast = this.toastCtrl.create({
-              message: result.ErrorMessage,
-              duration: 3000,
-              position: 'top'
-            });
-            toast.present();
-          }
-          loader.dismiss();
-        }
-      );
+        );
+    }
   }
 
   doInfinite(infiniteScroll) {
