@@ -100,7 +100,7 @@ export class IndexPage {
   }
 
   OpenWeb(url: string) {
-    if (url != url && url.trim().length > 0) {
+    if (url != null && url.trim().length > 0) {
       const browser = this.iab.create(url, "_blank");
     }
   }
