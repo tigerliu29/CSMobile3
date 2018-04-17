@@ -534,4 +534,9 @@ export class IndexBannerResult extends ResultBase{
 export class IndexBannerSetting {
   ImageUrl: string;
   TargetUrl: string;
+
+  constructor(image?: string, target?: string){
+    this.TargetUrl = target;
+    this.ImageUrl = image;
+  }
 }

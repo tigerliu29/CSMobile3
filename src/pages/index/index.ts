@@ -20,7 +20,7 @@ export class IndexPage {
 
   @ViewChild(Slides) slides: Slides;
 
-  Banners: IndexBannerSetting[] = new Array<IndexBannerSetting>();
+  Banners2: IndexBannerSetting[] = new Array<IndexBannerSetting>();
 
   constructor(
     public navCtrl: NavController,
@@ -30,33 +30,58 @@ export class IndexPage {
     public csdata: CsDataProvider,
     public nativeStorage: NativeStorage
   ) {
-    let s = new IndexBannerSetting();
-    s.TargetUrl = 'https://mp.weixin.qq.com/s?__biz=MzAxNDM4ODY2Ng==&mid=502901965&idx=1&sn=9c375840c475adb7fed7ba880e9d0d97&chksm=0399101834ee990e880109bff430c3a7b3323b59d95c521e871345ee3aea5125f78b7feb358e&mpshare=1&scene=1&srcid=04136Myun7FtbTQWhLaT0ZLI&pass_ticket=Zm%2BSR6L8uvuOTz7wwIT%2FdVjRNcJFlFkETGyb1iOBA3DjtExl3INPoHJRhILc5xFN#rd';
-    s.ImageUrl = "http://csservice.goyo58.cn/Images/1.jpg";
-    this.Banners.push(s)
+    this.Banners2.push(
+      new IndexBannerSetting(
+        "assets/imgs/4.jpg",
+        "http://mp.weixin.qq.com/s/QH8XgDnvXmz7iQ-IP5OuCA"
+      )
+    );
+    this.Banners2.push(
+      new IndexBannerSetting(
+        "assets/imgs/5.jpg",
+        "http://mp.weixin.qq.com/s/tZUe-2b6Vq7bWUKSlBk_hg"
+      )
+    );
+    this.Banners2.push(
+      new IndexBannerSetting(
+        "assets/imgs/1.jpg",
+        ""
+      )
+    );
+    this.Banners2.push(
+      new IndexBannerSetting(
+        "assets/imgs/2.jpg",
+        ""
+      )
+    );
+    this.Banners2.push(
+      new IndexBannerSetting(
+        "assets/imgs/3.jpg",
+        ""
+      )
+    );
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad IndexPage');
-    this.nativeStorage.getItem("Banners")
+    this.nativeStorage.getItem("Banners2")
       .then(banners => {
-        this.GetIndexBanners()
+        this.GetIndexBanners();
         if (banners.length > 0) {
           this.ChangeBanners(banners);
         }
       })
       .catch(() => {
         this.GetIndexBanners()
-      });      
+      });
   }
 
   ChangeBanners(banners: IndexBannerSetting[]) {
-    if(banners.length > 0){
-      this.Banners.splice(0, this.Banners.length);
+    if (banners.length > 0) {
+      this.Banners2.splice(0, this.Banners2.length);
       banners.forEach(b => {
-        this.Banners.push(b);
+        this.Banners2.push(b);
       });
-      this.slides.update();
     }
   }
 
@@ -67,7 +92,7 @@ export class IndexPage {
           let banners: IndexBannerSetting[]
           if (result.ResultCode == EC_Success) {
             banners = result.Banners;
-            this.nativeStorage.setItem("banners", banners);
+            this.nativeStorage.setItem("banners2", banners);
             this.ChangeBanners(banners);
           }
         }
@@ -75,7 +100,9 @@ export class IndexPage {
   }
 
   OpenWeb(url: string) {
-    const browser = this.iab.create(url, "_blank");
+    if (url != url && url.trim().length > 0) {
+      const browser = this.iab.create(url, "_blank");
+    }
   }
 
   Goto(target: string) {
@@ -96,22 +123,4 @@ export class IndexPage {
     }
 
   }
-
-  TestLoading() {
-
-    let loader = this.loadingCtrl.create({
-      content: "获取数据..."
-    });
-    loader.present();
-    this.test();
-  }
-
-  async test() {
-    await this.sleep(3000)
-  }
-
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
 }

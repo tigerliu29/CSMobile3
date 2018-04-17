@@ -14,15 +14,11 @@
 
 
 <ion-content padding>
-
-  <ion-slides style="height: 33%" loop pager="true" loop="true" zoom="true">
-    <ion-slide *ngFor="let b of Banners" (click)="OpenWeb(b.TargetUrl)">
-      <img [src]="b.ImageUrl">
-    </ion-slide>
-  </ion-slides>
+  <img src="assets/imgs/banner.png" />
+  
   <hr style="width: 100%; background-color: rgba(239, 239, 239, 0.75); height: 1px; border-width: 0px;">
   <div style="margin-top: 30px; font-weight:bold;">常用应用</div>
-  <ion-grid style="margin-top: 20px;">
+  <ion-grid style="margin-top: 20px; margin-bottom: 20px;">
     <ion-row id="mainbuttons" nowrap justify-content-between>
       <div text-center (click)="Goto('行业资料')">
         <div>
@@ -50,4 +46,6 @@
       </div>
     </ion-row>
   </ion-grid>
+
+  <img *ngFor="let b of Banners2" style="margin-top: 0px; margin-bottom:0px;" [src]="b.ImageUrl" width="100%" (click)="OpenWeb(b.TargetUrl)" />
 </ion-content>
