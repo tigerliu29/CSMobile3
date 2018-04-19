@@ -41,9 +41,10 @@
     </ion-item>
   </ion-list>
 
-  <ion-textarea placeholder="输入内容" rows="6" [(ngModel)]="Content">
-
-  </ion-textarea>
+  <ion-item>
+    <ion-textarea placeholder="输入内容" rows="6" [(ngModel)]="Content">
+    </ion-textarea>
+  </ion-item>
 
   <button ion-button full round (click)="NewPost()">发帖</button>
 

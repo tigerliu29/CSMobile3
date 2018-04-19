@@ -79,7 +79,7 @@ export class NewPostPage {
     }
 
     let loader = this.loadingCtrl.create({
-      content: "登录..."
+      content: "发帖..."
     });
     loader.present();
     this.csdata.NewPost(this.ZYTag.Id, this.TypeTag.Id, this.Region.Code, this.Content)

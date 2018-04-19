@@ -129,15 +129,9 @@ export class CyclePage {
           else if (r.Id == target[index].Id) {
             break;
           }
-          else if (target[index].PublishTime >= r.PublishTime) {
-            if (index >= target.length - 1) {
-              target.push(r);
-              break;
-            }
-            else if (target[index + 1].PublishTime < r.PublishTime) {
-              target.splice(index + 1, 0, r);
-              break;
-            }
+          else if (target[index].PublishTimeObj <= r.PublishTimeObj) {
+            target.splice(index, 0, r);
+            break;
           }
           index++;
         } while (index <= target.length);
@@ -177,7 +171,7 @@ export class CyclePage {
             loader.present();
             this.csdata.NewReply(record.Id, data["Content"], this.csdata.UserId)
               .subscribe(r => {
-                if (r.ResultCode != 0) {                  
+                if (r.ResultCode != 0) {
                   let toast = this.toastCtrl.create({
                     message: r.ErrorMessage,
                     duration: 3000,
@@ -195,7 +189,7 @@ export class CyclePage {
                     lasttime = r.ReplyTime;
                   }
                   this.csdata.GetReply(true, record.Id, lastid, lasttime)
-                    .subscribe(r => {                      
+                    .subscribe(r => {
                       if (r.ResultCode != 0) {
                         let toast = this.toastCtrl.create({
                           message: r.ErrorMessage,
@@ -275,7 +269,7 @@ export class CyclePage {
 
     this.csdata.DeletePost(record.Id)
       .subscribe(
-        result => {          
+        result => {
           if (result.ResultCode == 0) {
             for (let i = 0; i < this.PostRecords.length; i++) {
               if (this.PostRecords[i].Id == record.Id) {
