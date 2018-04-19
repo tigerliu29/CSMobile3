@@ -160,15 +160,15 @@ export class RegisterPage {
       return;
     }
 
-    if (parseInt(this.UserName) != NaN) {
-      let toast = this.toastCtrl.create({
-        message: "用户名不能是纯数字",
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-      return;
-    }
+    // if (parseInt(this.UserName) != NaN) {
+    //   let toast = this.toastCtrl.create({
+    //     message: "用户名不能是纯数字",
+    //     duration: 3000,
+    //     position: 'top'
+    //   });
+    //   toast.present();
+    //   return;
+    // }
 
     if (this.Password.length == 0) {
       let toast = this.toastCtrl.create({
