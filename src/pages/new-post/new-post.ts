@@ -51,7 +51,7 @@ export class NewPostPage {
       toast.present();
     }
 
-    if (this.ZYTags == null) {
+    if (this.ZYTag == null) {
       let toast = this.toastCtrl.create({
         message: "请选择专业。",
         duration: 3000,
@@ -60,7 +60,7 @@ export class NewPostPage {
       toast.present();
     }
 
-    if (this.Regions == null) {
+    if (this.Region == null) {
       let toast = this.toastCtrl.create({
         message: "请选择地区。",
         duration: 3000,
