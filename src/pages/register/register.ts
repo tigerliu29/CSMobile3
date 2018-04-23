@@ -150,15 +150,15 @@ export class RegisterPage {
 
   Register() {
 
-    if (this.UserName.length == 0) {
-      let toast = this.toastCtrl.create({
-        message: "请输用户名",
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-      return;
-    }
+    // if (this.UserName.length == 0) {
+    //   let toast = this.toastCtrl.create({
+    //     message: "请输用户名",
+    //     duration: 3000,
+    //     position: 'top'
+    //   });
+    //   toast.present();
+    //   return;
+    // }
 
     // if (parseInt(this.UserName) != NaN) {
     //   let toast = this.toastCtrl.create({
@@ -180,35 +180,15 @@ export class RegisterPage {
       return;
     }
 
-    if (this.NickName.length == 0) {
-      let toast = this.toastCtrl.create({
-        message: "请输入昵称",
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-      return;
-    }
-
-    if (this.ConfirmPassword.length == 0) {
-      let toast = this.toastCtrl.create({
-        message: "请输入新账号密码",
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-      return;
-    }
-
-    if (this.ConfirmPassword != this.Password) {
-      let toast = this.toastCtrl.create({
-        message: "两次输入的密码不一致",
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-      return;
-    }
+    // if (this.NickName.length == 0) {
+    //   let toast = this.toastCtrl.create({
+    //     message: "请输入昵称",
+    //     duration: 3000,
+    //     position: 'top'
+    //   });
+    //   toast.present();
+    //   return;
+    // }     
 
     if (!this.PhoneNumberIsValid) {
       let toast = this.toastCtrl.create({
@@ -230,6 +210,26 @@ export class RegisterPage {
       return;
     }
 
+    if (this.ConfirmPassword.length == 0) {
+      let toast = this.toastCtrl.create({
+        message: "请输入新账号密码",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }   
+
+    if (this.ConfirmPassword != this.Password) {
+      let toast = this.toastCtrl.create({
+        message: "两次输入的密码不一致",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
+
     let loader = this.loadingCtrl.create({
       content: "注册用户..."
     });
@@ -239,7 +239,7 @@ export class RegisterPage {
       .subscribe(
         result => {
           if (result.ResultCode == EC_Success) {
-            this.csdata.Login(this.UserName, this.Password)
+            this.csdata.Login(this.PhoneNumber, this.Password)
               .subscribe(
                 result => {
                   loader.dismiss();

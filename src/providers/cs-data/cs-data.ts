@@ -20,7 +20,7 @@ export class CsDataProvider {
   readonly LoginAddr = this.BaseAddr + "/User/Login";
   readonly SendRecorverCodeAddr = this.BaseAddr + "/MobilePhoneConfirmCode/Send";
   readonly ResetPasswordAddr = this.BaseAddr + "/User/ResetPassword";
-  readonly RegisterUserAddr = this.BaseAddr + "/User/Register";
+  readonly RegisterUserAddr = this.BaseAddr + "/User/Register2";
   readonly GetAuthCodeAddr = this.BaseAddr + "/User/GetAuthCode";
   readonly GetUserDetailsAddr = this.BaseAddr + "/User/GetUserDetails";
   readonly UpdateUserDetailsAddr = this.BaseAddr + "/User/UpdateUserDetails";
