@@ -56,7 +56,7 @@ export class DocPage {
     this.Path = navParams.get("Path");
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     console.log('ionViewDidLoad DocPage');
     this.nativeStorage.getItem("DocDownloadingList")
       .then(
