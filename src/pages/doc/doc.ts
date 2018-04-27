@@ -7,6 +7,7 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
 import { Platform } from 'ionic-angular';
+import { getNonHydratedSegmentIfLinkAndUrlMatch } from 'ionic-angular/navigation/url-serializer';
 
 /**
  * Generated class for the DocPage page.
@@ -27,6 +28,8 @@ export class DocPage {
 
   DisplayRecords = [];
 
+  DownloadingList = [];
+
   get LocalDir() {
     if (this.plt.is("ios")) {
       return this.file.dataDirectory + "行业资料/";
@@ -46,7 +49,8 @@ export class DocPage {
     public file: File,
     public cdr: ChangeDetectorRef,
     public opener: FileOpener,
-    public plt: Platform
+    public plt: Platform,
+    public nativeStorage: NativeStorage
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
@@ -54,38 +58,44 @@ export class DocPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DocPage');
-    if (this.plt.is("ios")) {
-    }
-    else {
-      let loader = this.loadingCtrl.create({
-        content: "获取数据..."
-      });
-      loader.present();
-      this.csdata.DogumentList(this.Path)
-        .subscribe(
-          result => {
-            if (result.ResultCode == EC_Success) {
-              for (let i = 0; i < result.Directories.length; i++) {
-                this.ListRecords.push(new ListItem(result.Directories[i], "Directory"));
-              }
+    this.nativeStorage.getItem("DocDownloadingList")
+      .then(i => {
+        if (i != null) {
+          this.DownloadingList = i;
+        }
+        if (this.plt.is("ios")) {
+        }
+        else {
+          let loader = this.loadingCtrl.create({
+            content: "获取数据..."
+          });
+          loader.present();
+          this.csdata.DogumentList(this.Path)
+            .subscribe(
+              result => {
+                if (result.ResultCode == EC_Success) {
+                  for (let i = 0; i < result.Directories.length; i++) {
+                    this.ListRecords.push(new ListItem(result.Directories[i], "Directory"));
+                  }
 
-              for (let i = 0; i < result.Files.length; i++) {
-                this.ListRecords.push(new ListItem(result.Files[i], "File"));
+                  for (let i = 0; i < result.Files.length; i++) {
+                    this.ListRecords.push(new ListItem(result.Files[i], "File"));
+                  }
+                  this.ContinueLoad();
+                }
+                else {
+                  let toast = this.toastCtrl.create({
+                    message: result.ErrorMessage,
+                    duration: 3000,
+                    position: 'top'
+                  });
+                  toast.present();
+                }
+                loader.dismiss();
               }
-              this.ContinueLoad();
-            }
-            else {
-              let toast = this.toastCtrl.create({
-                message: result.ErrorMessage,
-                duration: 3000,
-                position: 'top'
-              });
-              toast.present();
-            }
-            loader.dismiss();
-          }
-        );
-    }
+            );
+        }
+      });
   }
 
   doInfinite(infiniteScroll) {
@@ -130,14 +140,26 @@ export class DocPage {
           });
       }
       else {
-        this.file.checkFile(this.file.dataDirectory, "行业资料")
-          .then(
-            i=> this.StartDownload(item),
-            i=>{
-              this.file.createDir(this.file.dataDirectory, "行业资料", false);
-              this.StartDownload(item);
-            }
-          );
+        if (this.DownloadingList.indexOf(item.Data.DownloadUrl) >= 0) {
+          let toast = this.toastCtrl.create({
+            message: "此项目已经在下载中。",
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
+        else {
+          this.DownloadingList.push(item.Data.DownloadUrl);
+          this.nativeStorage.setItem("DocDownloadingList", this.DownloadingList);
+          this.file.checkFile(this.file.dataDirectory, "行业资料")
+            .then(
+              i => this.StartDownload(item),
+              i => {
+                this.file.createDir(this.file.dataDirectory, "行业资料", false);
+                this.StartDownload(item);
+              }
+            );
+        }
       }
     }
   }
