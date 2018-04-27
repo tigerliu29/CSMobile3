@@ -20,10 +20,10 @@ export class DocLocalPage {
   LocalFileList: LocalDocItem[] = new Array<LocalDocItem>();
   get LocalRootDir() {
     if (this.plt.is("ios")) {
-      return this.file.documentsDirectory;
+      return this.file.dataDirectory ;
     }
     else {
-      return this.file.externalRootDirectory;
+      return this.file.dataDirectory ;
     }
   }
   constructor(

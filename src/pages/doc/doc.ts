@@ -32,7 +32,7 @@ export class DocPage {
       return this.file.dataDirectory + "行业资料/";
     }
     else {
-      return this.file.externalRootDirectory + "行业资料/";
+      return this.file.dataDirectory + "行业资料/";
     }
   }
 
