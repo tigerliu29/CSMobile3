@@ -85,6 +85,8 @@ export class DocPage {
         .subscribe(
           result => {
             if (result.ResultCode == EC_Success) {
+              this.ListRecords.splice(0, this.ListRecords.length);
+
               for (let i = 0; i < result.Directories.length; i++) {
                 this.ListRecords.push(new ListItem(result.Directories[i], "Directory"));
               }
