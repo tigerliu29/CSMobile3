@@ -189,6 +189,10 @@ export class DocPage {
         i => {
           item.Downloading = false;
           item.LocalPath = target;
+          let index = this.DownloadingList.indexOf(item.Data.DownloadUrl);
+          if (index >= 0) {
+            this.DownloadingList.splice(index, 1);
+          }
         },
         reason => {
           let msg = "";
