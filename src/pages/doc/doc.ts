@@ -138,7 +138,6 @@ export class DocPage {
               this.StartDownload(item);
             }
           );
-        this.StartDownload(item);
       }
     }
   }
