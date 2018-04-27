@@ -130,6 +130,12 @@ export class DocPage {
           });
       }
       else {
+        this.file.checkFile(this.file.dataDirectory, "行业资料")
+          .then(i=> this.StartDownload(item))
+          .catch(i=>{
+            this.file.createDir(this.file.dataDirectory, "行业资料", false);
+            this.StartDownload(item);
+          });
         this.StartDownload(item);
       }
     }
