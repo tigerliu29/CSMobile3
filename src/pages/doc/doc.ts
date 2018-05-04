@@ -57,20 +57,35 @@ export class DocPage {
   }
 
   ionViewDidEnter() {
-    console.log('ionViewDidLoad DocPage');
-    this.nativeStorage.getItem("DocDownloadingList")
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    fileTransfer
+      .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
       .then(
         i => {
-          console.log('DocDownloadingList Geted');
-          if (i != null) {
-            this.DownloadingList = i;
-          }
-          this.LoadList();
-        }
-      )
+        },
+        reason => {
+          let msg = "";
+          Object.keys(reason).forEach(k => {
+            msg = msg + k + ":" + reason[k] + "\n";
+          })
+          alert(msg);
+        })
       .catch(i => {
-        this.LoadList();
       });
+    // console.log('ionViewDidLoad DocPage');
+    // this.nativeStorage.getItem("DocDownloadingList")
+    //   .then(
+    //     i => {
+    //       console.log('DocDownloadingList Geted');
+    //       if (i != null) {
+    //         this.DownloadingList = i;
+    //       }
+    //       this.LoadList();
+    //     }
+    //   )
+    //   .catch(i => {
+    //     this.LoadList();
+    //   });
   }
 
   LoadList() {
