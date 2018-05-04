@@ -58,6 +58,9 @@ export class DocPage {
 
   ionViewDidEnter() {
     const fileTransfer: FileTransferObject = this.transfer.create();
+    fileTransfer.onProgress(i=>{
+      alert(1);
+    });
     fileTransfer
       .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
       .then(
