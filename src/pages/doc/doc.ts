@@ -186,7 +186,7 @@ export class DocPage {
       this.cdr.detectChanges();
     });
     fileTransfer
-      .download(item.Data.DownloadUrl, target)
+      .download("http://csservice.goyo58.cn/InstallPackage/pcclient" /*item.Data.DownloadUrl*/, target)
       .then(
         i => {
           item.Downloading = false;
