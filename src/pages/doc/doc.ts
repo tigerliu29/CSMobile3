@@ -179,7 +179,7 @@ export class DocPage {
   StartDownload(item: ListItem) {
     item.Percentage = 0;
     item.Downloading = true;
-    let target = this.LocalDir + item.Data.Name;
+    let target = this.file.dataDirectory + item.Data.Name; //this.LocalDir + item.Data.Name;
     const fileTransfer: FileTransferObject = this.transfer.create();
     fileTransfer.onProgress(e => {
       item.Percentage = Math.round(e.loaded / e.total * 100);
