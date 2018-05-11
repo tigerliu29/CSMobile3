@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, Events, LoadingController, ToastController } from 'ionic-angular';
 import { ScanModalPage } from '../scan-modal/scan-modal';
 import { CsDataProvider } from '../../providers/cs-data/cs-data';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 /**
  * Generated class for the AuthPage page.
  *
@@ -25,7 +25,8 @@ export class AuthPage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public ev: Events,
-    public csdata: CsDataProvider
+    public csdata: CsDataProvider,
+    public iab: InAppBrowser
   ) {
     this.ev.subscribe(
       "ScannedAuthString",
@@ -43,12 +44,24 @@ export class AuthPage {
               }
               else {
                 this.AuthCode = "";
+                if(result.ErrorMessage = "授权信息格式错误")
+                {
+                  const browser = this.iab.create(
+                    data,
+                    "_blank",
+                    {
+                      location: "no"
+                    });
+                }
+                else
+                {
                 let toast = this.toastCtrl.create({
                   message: result.ErrorMessage,
                   duration: 3000,
                   position: 'top'
                 });
                 toast.present();
+              }
                 
               }
             }
