@@ -57,44 +57,27 @@ export class DocPage {
   }
 
   ionViewDidEnter() {
-    const fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.onProgress(i=>{
-      alert(1);
-    });
-    fileTransfer
-      .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
+    console.log('ionViewDidLoad DocPage');
+    this.nativeStorage.getItem("DocDownloadingList")
       .then(
         i => {
-        },
-        reason => {
-          let msg = "";
-          Object.keys(reason).forEach(k => {
-            msg = msg + k + ":" + reason[k] + "\n";
-          })
-          alert(msg);
-        })
+          console.log('DocDownloadingList Geted');
+          if (i != null) {
+            this.DownloadingList = i;
+          }
+          this.LoadList();
+        }
+      )
       .catch(i => {
+        this.LoadList();
       });
-    // console.log('ionViewDidLoad DocPage');
-    // this.nativeStorage.getItem("DocDownloadingList")
-    //   .then(
-    //     i => {
-    //       console.log('DocDownloadingList Geted');
-    //       if (i != null) {
-    //         this.DownloadingList = i;
-    //       }
-    //       this.LoadList();
-    //     }
-    //   )
-    //   .catch(i => {
-    //     this.LoadList();
-    //   });
+    this.LoadList();
   }
 
   LoadList() {
-    // if (this.plt.is("ios")) {
-    // }
-    // else {
+    if (this.plt.is("ios")) {
+    }
+    else {
       let loader = this.loadingCtrl.create({
         content: "获取数据..."
       });
@@ -125,7 +108,7 @@ export class DocPage {
             loader.dismiss();
           }
         );
-    // }
+    }
   }
 
   doInfinite(infiniteScroll) {
@@ -197,14 +180,14 @@ export class DocPage {
   StartDownload(item: ListItem) {
     item.Percentage = 0;
     item.Downloading = true;
-    let target = this.file.dataDirectory + "a.pdf"; //this.LocalDir + item.Data.Name;
+    let target = this.LocalDir + item.Data.Name;
     const fileTransfer: FileTransferObject = this.transfer.create();
     fileTransfer.onProgress(e => {
       item.Percentage = Math.round(e.loaded / e.total * 100);
       this.cdr.detectChanges();
     });
     fileTransfer
-      .download("http://csservice.goyo58.cn/InstallPackage/pcclient" /*item.Data.DownloadUrl*/, target)
+      .download(item.Data.DownloadUrl, target)
       .then(
         i => {
           item.Downloading = false;
