@@ -75,9 +75,9 @@ export class DocPage {
   }
 
   LoadList() {
-    if (this.plt.is("ios")) {
-    }
-    else {
+    // if (this.plt.is("ios")) {
+    // }
+    // else {
       let loader = this.loadingCtrl.create({
         content: "获取数据..."
       });
@@ -108,7 +108,7 @@ export class DocPage {
             loader.dismiss();
           }
         );
-    }
+    // }
   }
 
   doInfinite(infiniteScroll) {
