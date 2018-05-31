@@ -30,7 +30,9 @@ export class CsDataProvider {
   readonly GetPostRepliesAddr = this.BaseAddr + "/Post/GetPostReplies";
   readonly DeletePostAddr = this.BaseAddr + "/Post/DeletePost";
   readonly DocumentListAddr = this.BaseAddr + "/Document/Index";
+  readonly DocumentListSearch = this.BaseAddr + "/Document/SeachPDFAll";
   readonly IndexBannerAddr = this.BaseAddr + "/MobileData/IndexBanner";
+
 
   UserId: string;
   UserIdentity: string;
@@ -211,6 +213,13 @@ export class CsDataProvider {
     let request = this.PrepareRequest(new DocumentListRequest());
     request.Path = dir;
     return this.MakeRequest(DocumentListResult, this.DocumentListAddr, request);
+  }
+
+  public DogumentListFileName(dir: string,FileName:string) {
+    let request = this.PrepareRequest(new DocumentListRequest());
+    request.Path = dir;
+    request.FileName=FileName;
+    return this.MakeRequest(DocumentListResult, this.DocumentListSearch, request);
   }
 
 
@@ -504,6 +513,7 @@ export class DeletePostResult extends ResultBase {
 
 class DocumentListRequest extends RequestBase {
   Path: string;
+  FileName:string;
 }
 
 export class DocumentListResult extends ResultBase {

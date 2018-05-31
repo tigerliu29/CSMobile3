@@ -4,6 +4,7 @@ import { DirectoryRecord, CsDataProvider } from '../../providers/cs-data/cs-data
 import { EC_Success } from '../../app/app.module';
 import { DocPage } from '../doc/doc';
 import { DocLocalPage } from '../doc-local/doc-local';
+import { DocSearchPage } from '../doc-search/doc-search';
 
 /**
  * Generated class for the DocRootPage page.
@@ -18,8 +19,8 @@ import { DocLocalPage } from '../doc-local/doc-local';
 })
 export class DocRootPage {
 
-  RootItems: DirectoryRecord[] = new Array<DirectoryRecord>();
-  Downloaded = new DirectoryRecord();
+  RootItems = [];
+  //Downloaded = new DirectoryRecord();
 
   constructor(
     public navCtrl: NavController,
@@ -28,9 +29,9 @@ export class DocRootPage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController
   ) {
-    this.Downloaded.Name = "已下载";
-    this.Downloaded.IconUrl = "assets/imgs/Downloaded.png";
-    this.RootItems.push(this.Downloaded);
+    // this.Downloaded.Name = "已下载";
+    // this.Downloaded.IconUrl = "assets/imgs/Downloaded.png";
+    // this.RootItems.push(this.Downloaded);
   }
 
   ionViewDidLoad() {
@@ -43,8 +44,40 @@ export class DocRootPage {
       .subscribe(
         result => {
           loader.dismiss();
+          console.log(result);
           if (result.ResultCode == EC_Success) {
-            result.Directories.forEach(i => this.RootItems.push(i));
+
+            // this.Downloaded.Name = "已下载";
+            // this.Downloaded.IconUrl = "assets/imgs/Downloaded.png";
+            let rowobj = { Name: "已下载", IconUrl: "assets/imgs/Downloaded.png", Path: "" };
+            let RowDir = new Array<DirectoryRecord>();
+            RowDir.push(rowobj);
+            let rowcount = 1;
+            result.Directories.forEach(
+              i => {
+
+                if (rowcount == 3) {
+                  RowDir.push(i);
+                  this.RootItems.push(RowDir);
+                  RowDir = new Array<DirectoryRecord>();
+                  console.log(rowcount);
+                  rowcount = 0;
+                } else {
+                  RowDir.push(i);
+                  console.log(rowcount);
+                  rowcount++;
+                }
+              }
+            );
+            if (rowcount != 0) {    
+              for (let i = 0; i < 4 - rowcount; i++) {
+                let objnull = { Name: "", IconUrl: "", Path: "" };
+                RowDir.push(objnull);
+              }
+              this.RootItems.push(RowDir);
+            }
+            console.log(this.RootItems);
+            //result.Directories.forEach(i => this.RootItems.push(i));
           }
           else {
             let toast = this.toastCtrl.create({
@@ -66,5 +99,15 @@ export class DocRootPage {
       this.navCtrl.push(DocPage, { Path: item.Path, Name: item.Name });
     }
   }
+  onInput(event) {
+    //let searchedText = ev.target.value;
+     console.log('onInput');
+     
+  }
 
+  inputChanged() {
+    //let searchedText = ev.target.value;
+
+    this.navCtrl.push(DocSearchPage);
+  }
 }

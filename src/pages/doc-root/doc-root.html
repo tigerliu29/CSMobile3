@@ -5,19 +5,17 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>行业资料</ion-title>
-  </ion-navbar>
-
+  <ion-toolbar>
+    <ion-searchbar placeholder="点击我 搜索图集规范" (click)="inputChanged()"   (ionInput)="onInput($event)"> </ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
   <ion-grid>
-    <ion-row>
-      <ion-col col-sm *ngFor="let item of RootItems">
-        <div text-center (click)="ItemClick(item)">
+    <ion-row *ngFor="let items of RootItems">
+      <ion-col col-sm *ngFor="let item of items">
+        <div text-center *ngIf="item.Name.length > 0" (click)="ItemClick(item)">
           <img width="32" height="32" [src]="item.IconUrl">
           <div style="font-size: small">{{item.Name}}</div>
         </div>
@@ -25,3 +23,4 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+

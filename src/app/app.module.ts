@@ -27,6 +27,7 @@ import { NewPostPage } from '../pages/new-post/new-post';
 import { PostSearchPage } from '../pages/post-search/post-search';
 import { DocRootPage } from '../pages/doc-root/doc-root';
 import { DocLocalPage } from '../pages/doc-local/doc-local';
+import { DocSearchPage } from '../pages/doc-search/doc-search';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 
@@ -48,6 +49,7 @@ import { File } from '@ionic-native/file';
     PostSearchPage,
     DocRootPage,
     DocLocalPage,
+    DocSearchPage,
     DocPage    
   ],
   imports: [
@@ -82,6 +84,7 @@ import { File } from '@ionic-native/file';
     PostSearchPage,
     DocRootPage,
     DocLocalPage,
+    DocSearchPage,
     DocPage
   ],
   providers: [
