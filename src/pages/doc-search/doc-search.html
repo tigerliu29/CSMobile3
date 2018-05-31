@@ -18,7 +18,7 @@
         <ion-icon style="font-size: 55px;" *ngIf="r.StartIcon.length > 0" [name]="r.StartIcon" item-start></ion-icon>
         <div>
           <div> {{r.Data.Name}}</div>
-          <div style="font-size: 15px;margin-top: 5px">所在目录：{{r.Data.FirstDirName}}</div>        
+          <div style="font-size:15px;margin-top:5px">所在目录：{{r.Data.FirstDirName}}</div>        
         </div>
         <div item-end *ngIf="r.Downloading">{{r.Percentage}}%</div>
         <ion-icon *ngIf="r.EndIcon.length > 0 && !r.Downloading && (r.LocalPath==null || r.LocalPath.length == 0)" [name]="r.EndIcon"
