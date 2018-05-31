@@ -16,7 +16,7 @@
     <ion-row *ngFor="let items of RootItems">
       <ion-col col-sm *ngFor="let item of items">
         <div text-center *ngIf="item.Name.length > 0" (click)="ItemClick(item)">
-          <img width="32" height="32" [src]="item.IconUrl">
+          <img width="32" height="32" [src]="item.IconUrl"/>
           <div style="font-size: small">{{item.Name}}</div>
         </div>
       </ion-col>

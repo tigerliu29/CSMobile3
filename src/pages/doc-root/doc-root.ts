@@ -49,7 +49,7 @@ export class DocRootPage {
 
             // this.Downloaded.Name = "已下载";
             // this.Downloaded.IconUrl = "assets/imgs/Downloaded.png";
-            let rowobj = { Name: "已下载", IconUrl: "assets/imgs/Downloaded.png", Path: "" };
+            let rowobj = { Name: "已下载", IconUrl: "assets/imgs/Downloaded.png", Path: "",FirstDirName:""};
             let RowDir = new Array<DirectoryRecord>();
             RowDir.push(rowobj);
             let rowcount = 1;
@@ -71,7 +71,7 @@ export class DocRootPage {
             );
             if (rowcount != 0) {    
               for (let i = 0; i < 4 - rowcount; i++) {
-                let objnull = { Name: "", IconUrl: "", Path: "" };
+                let objnull = { Name: "", IconUrl: "", Path: "" ,FirstDirName:""};
                 RowDir.push(objnull);
               }
               this.RootItems.push(RowDir);
