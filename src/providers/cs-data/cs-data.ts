@@ -524,6 +524,7 @@ export class DocumentListResult extends ResultBase {
 export class DirectoryRecord {
   Name: string;
   Path: string;
+  FirstDirName:string;
   IconUrl: string;
 }
 
