@@ -7,6 +7,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { DocumentViewer } from '@ionic-native/document-viewer';
 import { FileOpener } from '@ionic-native/file-opener';
+import { FileTransfer,FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { AppVersion } from "@ionic-native/app-version";
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -28,8 +31,8 @@ import { PostSearchPage } from '../pages/post-search/post-search';
 import { DocRootPage } from '../pages/doc-root/doc-root';
 import { DocLocalPage } from '../pages/doc-local/doc-local';
 import { DocSearchPage } from '../pages/doc-search/doc-search';
-import { FileTransfer } from '@ionic-native/file-transfer';
-import { File } from '@ionic-native/file';
+import { NativeService } from '../providers/NativeService';
+
 
 @NgModule({
   declarations: [
@@ -97,9 +100,12 @@ import { File } from '@ionic-native/file';
     InAppBrowser,
     QRScanner,
     FileTransfer,
+    FileTransferObject,
     File,
     DocumentViewer,
-    FileOpener   
+    FileOpener,
+    AppVersion,
+    NativeService,
   ]
 })
 export class AppModule { }

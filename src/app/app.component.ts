@@ -7,6 +7,8 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import { HomePage } from '../pages/home/home';
 import { LoginInfoName } from './app.module';
 import { LoginPage } from '../pages/login/login';
+import { NativeService } from '../providers/NativeService';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -18,7 +20,8 @@ export class MyApp {
     platform: Platform, statusBar: StatusBar,
     splashScreen: SplashScreen,
     public nativeStorage: NativeStorage,
-    public ev: Events
+    public ev: Events,
+    private nativeService:NativeService
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -30,13 +33,17 @@ export class MyApp {
           data => {
             console.log("发现本地存储中的登陆信息，设置HomePage为主页");
             this.rootPage = HomePage;
+    
           },
           error => {
             console.log("未发现本地存储中的登陆信息，设置LoginPage为主页");
             this.rootPage = LoginPage;
+
           }
         );
+      this.nativeService.detectionUpgrade();//检查app是否升级
       splashScreen.hide();
+
     });
   }
 

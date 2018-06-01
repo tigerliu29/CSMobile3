@@ -34,6 +34,7 @@ export class CsDataProvider {
   readonly IndexBannerAddr = this.BaseAddr + "/MobileData/IndexBanner";
 
 
+
   UserId: string;
   UserIdentity: string;
   LoginPassword: string;
