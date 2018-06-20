@@ -41,28 +41,33 @@ export class AuthPage {
               loader.dismiss();
               if (result.ResultCode == 0) {
                 this.AuthCode = result.AuthCode;
-              }
-              else {
+              } else {
                 this.AuthCode = "";
-                if(result.ErrorMessage = "授权信息格式错误")
-                {
-                  const browser = this.iab.create(
-                    data,
-                    "_blank",
-                    {
-                      location: "no"
+                if(result.ErrorMessage = "授权信息格式错误"){
+                  if(data.indexOf("http://") != -1 ||data.indexOf("https://") != -1 ){
+                    const browser = this.iab.create(
+                      data,
+                      "_blank",
+                      {
+                        location: "no"
+                      });                    
+   
+                  }else{
+                    let toast = this.toastCtrl.create({
+                      message: result.ErrorMessage,
+                      duration: 3000,
+                      position: 'top'
                     });
-                }
-                else
-                {
-                let toast = this.toastCtrl.create({
-                  message: result.ErrorMessage,
-                  duration: 3000,
-                  position: 'top'
-                });
-                toast.present();
-              }
-                
+                    toast.present();  
+                  }
+                } else{
+                   let toast = this.toastCtrl.create({
+                     message: result.ErrorMessage,
+                     duration: 3000,
+                     position: 'top'
+                   });
+                   toast.present();
+                }                
               }
             }
           );
