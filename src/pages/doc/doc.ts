@@ -90,7 +90,7 @@ export class DocPage {
         }
       )
       .catch(i => {
-        this.loader.dismiss();
+        //this.loader.dismiss();
         //this.LoadList();
       });
     this.LoadList();
@@ -126,7 +126,7 @@ export class DocPage {
               toast.present();
               this.loader.dismiss();
             }
-          
+            this.loader.dismiss();
           }
         );
     // }
@@ -185,6 +185,7 @@ export class DocPage {
           toast.present();
         }
         else {
+          alert(this.file.dataDirectory);
           this.DownloadingList.push(item.Data.DownloadUrl);
           this.nativeStorage.setItem("DocDownloadingList", this.DownloadingList);
           this.file.checkFile(this.file.dataDirectory, "行业资料")
