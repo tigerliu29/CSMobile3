@@ -79,20 +79,20 @@ export class DocPage {
     //   .catch(i => {
     //   });
 
-    // this.nativeStorage.getItem("DocDownloadingList")
-    //   .then(
-    //     i => {
-    //       console.log('DocDownloadingList Geted');
-    //       if (i != null) {
-    //         this.DownloadingList = i;
-    //       }
-    //       this.LoadList();
-    //     }
-    //   )
-    //   .catch(i => {
-    //     this.LoadList();
-    //   });
-   // this.LoadList();
+    this.nativeStorage.getItem("DocDownloadingList")
+      .then(
+        i => {
+          console.log('DocDownloadingList Geted');
+          if (i != null) {
+            this.DownloadingList = i;
+          }
+          //this.LoadList();
+        }
+      )
+      .catch(i => {
+        //this.LoadList();
+      });
+    this.LoadList();
   }
 
   LoadList() {
