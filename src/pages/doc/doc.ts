@@ -62,24 +62,24 @@ export class DocPage {
 
   ionViewDidEnter() {
     //console.log('ionViewDidLoad DocPage');
-    const fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.onProgress(i=>{
-      alert(i);
-    });
-    fileTransfer
-      .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
-      .then(
-        i => {
-        },
-        reason => {
-          let msg = "";
-          Object.keys(reason).forEach(k => {
-            msg = msg + k + ":" + reason[k] + "\n";
-          })
-          alert(msg);
-        })
-      .catch(i => {
-      });
+    // const fileTransfer: FileTransferObject = this.transfer.create();
+    // fileTransfer.onProgress(i=>{
+    //   alert(1);
+    // });
+    // fileTransfer
+    //   .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
+    //   .then(
+    //     i => {
+    //     },
+    //     reason => {
+    //       let msg = "";
+    //       Object.keys(reason).forEach(k => {
+    //         msg = msg + k + ":" + reason[k] + "\n";
+    //       })
+    //       alert(msg);
+    //     })
+    //   .catch(i => {
+    //   });
 
     this.nativeStorage.getItem("DocDownloadingList")
       .then(
@@ -215,7 +215,7 @@ export class DocPage {
 
     alert(target);
     fileTransfer
-      .download(item.Data.DownloadUrl, target)
+      .download(encodeURI(item.Data.DownloadUrl), target)
       .then(
         i => {
           item.Downloading = false;
