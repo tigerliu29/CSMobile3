@@ -35,10 +35,10 @@ export class DocPage {
   hxzldir:string
   get LocalDir() {
     if (this.plt.is("ios")) {
-      return this.file.dataDirectory + "hxzl/";
+      return this.file.dataDirectory + this.hxzldir+"/";
     }
     else {
-      return this.file.dataDirectory + "hxzl/";
+      return this.file.dataDirectory + this.hxzldir+"/";
     }
   }
 
@@ -57,30 +57,10 @@ export class DocPage {
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
-    this.hxzldir="hxzl";
+    this.hxzldir="行业资料";
   }
 
   ionViewDidEnter() {
-    //console.log('ionViewDidLoad DocPage');
-    // const fileTransfer: FileTransferObject = this.transfer.create();
-    // fileTransfer.onProgress(i=>{
-    //   alert(1);
-    // });
-    // fileTransfer
-    //   .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
-    //   .then(
-    //     i => {
-    //     },
-    //     reason => {
-    //       let msg = "";
-    //       Object.keys(reason).forEach(k => {
-    //         msg = msg + k + ":" + reason[k] + "\n";
-    //       })
-    //       alert(msg);
-    //     })
-    //   .catch(i => {
-    //   });
-
     this.nativeStorage.getItem("DocDownloadingList")
       .then(
         i => {
@@ -88,21 +68,16 @@ export class DocPage {
           if (i != null) {
             this.DownloadingList = i;
           }
-          //this.LoadList();
+          this.LoadList();
         }
       )
       .catch(i => {
-        //this.loader.dismiss();
-        //this.LoadList();
+          this.LoadList();
       });
-    this.LoadList();
+
   }
 
   LoadList() {
-    // if (this.plt.is("ios")) {
-    // }
-    // else {
-
       this.loader.present();
       this.csdata.DogumentList(this.Path)
         .subscribe(
@@ -164,7 +139,6 @@ export class DocPage {
     if (item.Type == "Directory")
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
     else {
-      alert(item.LocalPath );
       if (item.LocalPath != null && item.LocalPath.length > 0&&typeof(item.LocalPath)!="undefined") {
         this.opener.open(item.LocalPath, 'application/pdf')
           .catch(reason => {
@@ -187,7 +161,7 @@ export class DocPage {
           toast.present();
         }
         else {
-          alert(this.file.dataDirectory);
+          //alert(this.file.dataDirectory);
           this.DownloadingList.push(item.Data.DownloadUrl);
           this.nativeStorage.setItem("DocDownloadingList", this.DownloadingList);
           this.file.checkFile(this.file.dataDirectory, this.hxzldir)
@@ -213,7 +187,7 @@ export class DocPage {
       this.cdr.detectChanges();
     });
 
-    alert(target);
+  
     fileTransfer
       .download(encodeURI(item.Data.DownloadUrl), target)
       .then(
