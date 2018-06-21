@@ -90,6 +90,7 @@ export class DocPage {
         }
       )
       .catch(i => {
+        this.loader.dismiss();
         //this.LoadList();
       });
     this.LoadList();
@@ -162,7 +163,7 @@ export class DocPage {
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
     else {
       alert(item.LocalPath );
-      if (item.LocalPath != null && item.LocalPath.length > 0) {
+      if (item.LocalPath != null && item.LocalPath.length > 0&&typeof(item.LocalPath)!="undefined") {
         this.opener.open(item.LocalPath, 'application/pdf')
           .catch(reason => {
             let msg = "";
