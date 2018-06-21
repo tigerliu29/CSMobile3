@@ -32,12 +32,13 @@ export class DocPage {
   loader = this.loadingCtrl.create({
     content: "获取数据2..."
   });
+  hxzldir:string
   get LocalDir() {
     if (this.plt.is("ios")) {
-      return this.file.dataDirectory + "行业资料/";
+      return this.file.dataDirectory + "hxzl/";
     }
     else {
-      return this.file.dataDirectory + "行业资料/";
+      return this.file.dataDirectory + "hxzl/";
     }
   }
 
@@ -56,6 +57,7 @@ export class DocPage {
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
+    this.hxzldir="hxzl";
   }
 
   ionViewDidEnter() {
@@ -188,11 +190,11 @@ export class DocPage {
           alert(this.file.dataDirectory);
           this.DownloadingList.push(item.Data.DownloadUrl);
           this.nativeStorage.setItem("DocDownloadingList", this.DownloadingList);
-          this.file.checkFile(this.file.dataDirectory, "行业资料")
+          this.file.checkFile(this.file.dataDirectory, this.hxzldir)
             .then(
               i => this.StartDownload(item),
               i => {
-                this.file.createDir(this.file.dataDirectory, "行业资料", false);
+                this.file.createDir(this.file.dataDirectory, this.hxzldir, false);
                 this.StartDownload(item);
               }
             );
@@ -210,6 +212,8 @@ export class DocPage {
       item.Percentage = Math.round(e.loaded / e.total * 100);
       this.cdr.detectChanges();
     });
+
+    alert(target);
     fileTransfer
       .download(item.Data.DownloadUrl, target)
       .then(
@@ -229,6 +233,7 @@ export class DocPage {
           alert(msg);
         })
       .catch(i => {
+        alert('异常');
         item.Downloading = false;
         this.file.checkFile(this.LocalDir, item.Data.Name)
           .then(() => {
