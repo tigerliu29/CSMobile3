@@ -29,7 +29,9 @@ export class DocPage {
   DisplayRecords = [];
 
   DownloadingList = [];
-
+  loader = this.loadingCtrl.create({
+    content: "获取数据2..."
+  });
   get LocalDir() {
     if (this.plt.is("ios")) {
       return this.file.dataDirectory + "行业资料/";
@@ -57,25 +59,25 @@ export class DocPage {
   }
 
   ionViewDidEnter() {
-    console.log('ionViewDidLoad DocPage');
-    const fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.onProgress(i=>{
-      alert(1);
-    });
-    fileTransfer
-      .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
-      .then(
-        i => {
-        },
-        reason => {
-          let msg = "";
-          Object.keys(reason).forEach(k => {
-            msg = msg + k + ":" + reason[k] + "\n";
-          })
-          alert(msg);
-        })
-      .catch(i => {
-      });
+    //console.log('ionViewDidLoad DocPage');
+    // const fileTransfer: FileTransferObject = this.transfer.create();
+    // fileTransfer.onProgress(i=>{
+    //   alert(1);
+    // });
+    // fileTransfer
+    //   .download("http://csservice.goyo58.cn/InstallPackage/pcclient", this.file.dataDirectory + "a.pdf")
+    //   .then(
+    //     i => {
+    //     },
+    //     reason => {
+    //       let msg = "";
+    //       Object.keys(reason).forEach(k => {
+    //         msg = msg + k + ":" + reason[k] + "\n";
+    //       })
+    //       alert(msg);
+    //     })
+    //   .catch(i => {
+    //   });
 
     // this.nativeStorage.getItem("DocDownloadingList")
     //   .then(
@@ -97,10 +99,8 @@ export class DocPage {
     // if (this.plt.is("ios")) {
     // }
     // else {
-      let loader = this.loadingCtrl.create({
-        content: "获取数据..."
-      });
-      loader.present();
+
+      this.loader.present();
       this.csdata.DogumentList(this.Path)
         .subscribe(
           result => {
@@ -123,8 +123,9 @@ export class DocPage {
                 position: 'top'
               });
               toast.present();
+              this.loader.dismiss();
             }
-            loader.dismiss();
+          
           }
         );
     // }
@@ -153,12 +154,14 @@ export class DocPage {
         infiniteScroll.complete();
       }
     }
+    this.loader.dismiss();
   }
 
   ItemClick(item: ListItem) {
     if (item.Type == "Directory")
       this.navCtrl.push(DocPage, { Path: item.Data.Path, Name: item.Data.Name })
     else {
+      alert(item.LocalPath );
       if (item.LocalPath != null && item.LocalPath.length > 0) {
         this.opener.open(item.LocalPath, 'application/pdf')
           .catch(reason => {

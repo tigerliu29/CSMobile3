@@ -37,7 +37,7 @@ export class DocRootPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad DocRootPage');
     let loader = this.loadingCtrl.create({
-      content: "获取数据..."
+      content: "获取数据1..."
     });
     loader.present();
     this.csdata.DogumentList("")
