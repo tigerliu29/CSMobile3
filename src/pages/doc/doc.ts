@@ -31,15 +31,16 @@ export class DocPage {
   DownloadingList = [];
 
   DownSueccList=[];
-  
-  loader;
 
+  hxzldir:string;
+
+  loader;
   get LocalDir() {
     if (this.plt.is("ios")) {
-      return this.file.dataDirectory + "行业资料/";
+      return this.file.dataDirectory + this.hxzldir+"/";
     }
     else {
-      return this.file.dataDirectory + "行业资料/";
+      return this.file.dataDirectory + this.hxzldir+"/";
     }
   }
 
@@ -56,43 +57,46 @@ export class DocPage {
     public plt: Platform,
     public nativeStorage: NativeStorage
   ) {
+    
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
+    this.hxzldir="行业资料";
+    alert(this.Name+"_"+this.Path);
   }
 
   ionViewDidLoad() {
+    this.LoadList();
+    this.nativeStorage.getItem("DocDownSueccList")
+    .then(
+      i => {
+        if (i != null) {
+          this.DownSueccList = i;
+        }
+      }
+    )
+    .catch(i => {
+    });
 
     this.nativeStorage.getItem("DocDownloadingList")
       .then(
         i => {
-          this.nativeStorage.getItem("DocDownSueccList")
-          .then(
-            i => {
-              if (i != null) {
-                this.DownSueccList = i;
-              }
-              this.LoadList();
-            }
-          )
-          .catch(i => {
-            this.LoadList();
-          });
-
+          console.log('DocDownloadingList Geted');
           if (i != null) {
             this.DownloadingList = i;
           }
-       
+         
         }
       )
       .catch(i => {
-        this.LoadList();
+    
       });
+
   }
 
   LoadList() {
     this.loader = this.loadingCtrl.create({
       content: "获取数据..."
-    });
+    });    
       this.loader.present();
       this.csdata.DogumentList(this.Path)
         .subscribe(
@@ -108,7 +112,6 @@ export class DocPage {
                 this.ListRecords.push(new ListItem(result.Files[i], "File"));
               }
               this.ContinueLoad();
-        
             }
             else {
               let toast = this.toastCtrl.create({
@@ -122,7 +125,7 @@ export class DocPage {
             
           }
         );
-
+    // }
   }
 
   doInfinite(infiniteScroll) {
@@ -177,13 +180,14 @@ export class DocPage {
           toast.present();
         }
         else {
+          //alert(this.file.dataDirectory);
           this.DownloadingList.push(item.Data.DownloadUrl);
           this.nativeStorage.setItem("DocDownloadingList", this.DownloadingList);
-          this.file.checkFile(this.file.dataDirectory, "行业资料")
+          this.file.checkFile(this.file.dataDirectory, this.hxzldir)
             .then(
               i => this.StartDownload(item),
               i => {
-                this.file.createDir(this.file.dataDirectory, "行业资料", false);
+                this.file.createDir(this.file.dataDirectory, this.hxzldir, false);
                 this.StartDownload(item);
               }
             );
