@@ -552,3 +552,13 @@ export class IndexBannerSetting {
     this.ImageUrl = image;
   }
 }
+
+export class DownFileInfos{
+  DownUrls: string[];
+  DownNames: string[];
+  
+  constructor() {
+    this.DownUrls=[];
+    this.DownNames=[];
+  }
+}

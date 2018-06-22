@@ -28,6 +28,8 @@ export class DocSearchPage {
     DisplayRecords = [];
   
     DownloadingList = [];
+
+    DownSueccList=[];
   
     get LocalDir() {
       if (this.plt.is("ios")) {
@@ -57,7 +59,18 @@ export class DocSearchPage {
   
     ionViewDidEnter() {
       console.log('ionViewDidLoad DocSearchPage');
-      //this.LoadList();
+      this.nativeStorage.getItem("DocDownSueccList")
+      .then(
+        i => {
+          if (i != null) {
+            this.DownSueccList = i;
+          }
+ 
+        }
+      )
+      .catch(i => {
+
+      });
     }
   
     LoadList(name:string) {
@@ -176,9 +189,11 @@ export class DocSearchPage {
         this.cdr.detectChanges();
       });
       fileTransfer
-        .download(item.Data.DownloadUrl, target)
+        .download(encodeURI(item.Data.DownloadUrl), target)
         .then(
           i => {
+            this.DownSueccList.push(item.Data.Name);
+            this.nativeStorage.setItem("DocDownSueccList", this.DownSueccList);           
             item.Downloading = false;
             item.LocalPath = target;
             let index = this.DownloadingList.indexOf(item.Data.DownloadUrl);

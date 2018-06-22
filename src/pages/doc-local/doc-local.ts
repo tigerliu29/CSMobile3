@@ -3,6 +3,7 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 import { DocumentViewerOptions, DocumentViewer } from '@ionic-native/document-viewer';
 import { FileOpener } from '@ionic-native/file-opener';
+import { NativeStorage } from '@ionic-native/native-storage';
 
 /**
  * Generated class for the DocLocalPage page.
@@ -16,7 +17,7 @@ import { FileOpener } from '@ionic-native/file-opener';
   templateUrl: 'doc-local.html',
 })
 export class DocLocalPage {
-
+  DownloadingList = [];
   LocalFileList: LocalDocItem[] = new Array<LocalDocItem>();
   get LocalRootDir() {
     if (this.plt.is("ios")) {
@@ -31,25 +32,53 @@ export class DocLocalPage {
     public navParams: NavParams,
     public file: File,
     public opener: FileOpener,
-    public plt: Platform
+    public plt: Platform,
+    public nativeStorage: NativeStorage
   ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DocLocalPage');
-    this.file.listDir(this.LocalRootDir, "行业资料")
+    this.nativeStorage.getItem("DocDownSueccList")
       .then(
-        enties => {
-          enties.forEach(i => {
-            if (i.isFile) {
-              let li = new LocalDocItem();
-              li.Name = i.name;
-              li.LocalPath = this.LocalRootDir + "行业资料/" + i.name;
-              this.LocalFileList.push(li);
-            }
-          });
+        i => {
+          if (i != null) {
+            this.DownloadingList = i;
+            this.file.listDir(this.LocalRootDir, "行业资料")
+            .then(
+              enties => {
+                enties.forEach(i => {
+                  // if (i.isFile) {
+                  //   let li = new LocalDocItem();
+                  //   li.Name = i.name;
+                  //   li.LocalPath = this.LocalRootDir + "行业资料/" + i.name;
+                  //   this.LocalFileList.push(li);
+                  // }
+                  if (i.isFile) {
+                    this.DownloadingList.forEach(fileName => {
+                      //alert("i"+fileName);
+                      if(i.name==fileName){ 
+                       // alert("o"+i.name);
+                        let li = new LocalDocItem();
+                        li.Name = i.name;
+                        li.LocalPath = this.LocalRootDir + "行业资料/" + i.name;
+                        this.LocalFileList.push(li);
+                      }
+                    });                      
+                  }
+                
+                });
+
+              }
+            );            
+          }
+
         }
-      );
+      )
+      .catch(i => {
+        alert('异常');
+      });
+
+
   }
 
   ItemClick(item: LocalDocItem) {

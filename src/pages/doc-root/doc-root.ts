@@ -33,12 +33,13 @@ export class DocRootPage {
     // this.Downloaded.IconUrl = "assets/imgs/Downloaded.png";
     // this.RootItems.push(this.Downloaded);
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DocRootPage');
-    let loader = this.loadingCtrl.create({
-      content: "获取数据1..."
+  //ionViewDidEnter()
+//  ionViewDidLoad() 只加载一次
+ionViewDidLoad() {
+    let  loader = this.loadingCtrl.create({
+      content: "获取数据..."
     });
+    this.RootItems=[];
     loader.present();
     this.csdata.DogumentList("")
       .subscribe(
@@ -96,6 +97,7 @@ export class DocRootPage {
       this.navCtrl.push(DocLocalPage);
     }
     else {
+ 
       this.navCtrl.push(DocPage, { Path: item.Path, Name: item.Name });
     }
   }

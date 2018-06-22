@@ -29,16 +29,17 @@ export class DocPage {
   DisplayRecords = [];
 
   DownloadingList = [];
-  loader = this.loadingCtrl.create({
-    content: "获取数据2..."
-  });
-  hxzldir:string
+
+  DownSueccList=[];
+  
+  loader;
+
   get LocalDir() {
     if (this.plt.is("ios")) {
-      return this.file.dataDirectory + this.hxzldir+"/";
+      return this.file.dataDirectory + "行业资料/";
     }
     else {
-      return this.file.dataDirectory + this.hxzldir+"/";
+      return this.file.dataDirectory + "行业资料/";
     }
   }
 
@@ -57,27 +58,41 @@ export class DocPage {
   ) {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
-    this.hxzldir="行业资料";
   }
 
-  ionViewDidEnter() {
+  ionViewDidLoad() {
+
     this.nativeStorage.getItem("DocDownloadingList")
       .then(
         i => {
-          console.log('DocDownloadingList Geted');
+          this.nativeStorage.getItem("DocDownSueccList")
+          .then(
+            i => {
+              if (i != null) {
+                this.DownSueccList = i;
+              }
+              this.LoadList();
+            }
+          )
+          .catch(i => {
+            this.LoadList();
+          });
+
           if (i != null) {
             this.DownloadingList = i;
           }
-          this.LoadList();
+       
         }
       )
       .catch(i => {
-          this.LoadList();
+        this.LoadList();
       });
-
   }
 
   LoadList() {
+    this.loader = this.loadingCtrl.create({
+      content: "获取数据..."
+    });
       this.loader.present();
       this.csdata.DogumentList(this.Path)
         .subscribe(
@@ -93,6 +108,7 @@ export class DocPage {
                 this.ListRecords.push(new ListItem(result.Files[i], "File"));
               }
               this.ContinueLoad();
+        
             }
             else {
               let toast = this.toastCtrl.create({
@@ -103,10 +119,10 @@ export class DocPage {
               toast.present();
               this.loader.dismiss();
             }
-            this.loader.dismiss();
+            
           }
         );
-    // }
+
   }
 
   doInfinite(infiniteScroll) {
@@ -161,14 +177,13 @@ export class DocPage {
           toast.present();
         }
         else {
-          //alert(this.file.dataDirectory);
           this.DownloadingList.push(item.Data.DownloadUrl);
           this.nativeStorage.setItem("DocDownloadingList", this.DownloadingList);
-          this.file.checkFile(this.file.dataDirectory, this.hxzldir)
+          this.file.checkFile(this.file.dataDirectory, "行业资料")
             .then(
               i => this.StartDownload(item),
               i => {
-                this.file.createDir(this.file.dataDirectory, this.hxzldir, false);
+                this.file.createDir(this.file.dataDirectory, "行业资料", false);
                 this.StartDownload(item);
               }
             );
@@ -191,7 +206,9 @@ export class DocPage {
     fileTransfer
       .download(encodeURI(item.Data.DownloadUrl), target)
       .then(
-        i => {
+        i => {      
+          this.DownSueccList.push(item.Data.Name);
+          this.nativeStorage.setItem("DocDownSueccList", this.DownSueccList);
           item.Downloading = false;
           item.LocalPath = target;
           let index = this.DownloadingList.indexOf(item.Data.DownloadUrl);
@@ -207,7 +224,7 @@ export class DocPage {
           alert(msg);
         })
       .catch(i => {
-        alert('异常');
+       // alert('异常'+this.LocalDir+ item.Data.Name);
         item.Downloading = false;
         this.file.checkFile(this.LocalDir, item.Data.Name)
           .then(() => {
