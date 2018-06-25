@@ -58,24 +58,22 @@ export class NativeService {
             }).present();
 
         } else if (this.isIos()) {
-          this.alertCtrl.create({
-            title: '升级',
-            subTitle: '发现新版本,是否立即升级？',
-            buttons: [{ text: '取消' },
-            {
-              text: '确定',
-              handler: () => {
-                netNum = this.listData['Ios']['Version'];
-                this.downUrl = this.listData['Ios']['DownUrl'];
-                if (currNum != netNum){
-                   this.openUrlByBrowser(this.downUrl);
+          netNum = this.listData['Ios']['Version'];
+          this.downUrl = this.listData['Ios']['DownUrl'];
+          if (currNum != netNum){                  
+              this.alertCtrl.create({
+                title: '升级',
+                subTitle: '发现新版本,是否立即升级？',
+                buttons: [{ text: '取消' },
+                {
+                  text: '确定',
+                  handler: () => {
+                    this.openUrlByBrowser(this.downUrl);
+                  }
                 }
-              }
-            }
-            ]
-          }).present();    
-
-           
+                ]
+              }).present();    
+          }         
         }
         return value;
       });
