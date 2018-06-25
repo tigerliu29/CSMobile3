@@ -75,7 +75,7 @@ export class DocLocalPage {
         }
       )
       .catch(i => {
-        alert('异常');
+        //alert('异常');
       });
 
 
