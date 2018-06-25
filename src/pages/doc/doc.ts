@@ -61,7 +61,7 @@ export class DocPage {
     this.Name = navParams.get("Name");
     this.Path = navParams.get("Path");
     this.hxzldir="行业资料";
-    alert(this.Name+"_"+this.Path);
+    //alert(this.Name+"_"+this.Path);
   }
 
   ionViewDidLoad() {
