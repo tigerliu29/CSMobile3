@@ -43,7 +43,6 @@ export class MyApp {
         );
       this.nativeService.detectionUpgrade();//检查app是否升级
       splashScreen.hide();
-
     });
   }
 
