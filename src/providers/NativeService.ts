@@ -58,19 +58,31 @@ export class NativeService {
             }).present();
 
         } else if (this.isIos()) {
-          netNum = this.listData['Ios']['Version'];
-          this.downUrl = this.listData['Ios']['DownUrl'];
-          alert(netNum+"_"+ this.downUrl);
-          if (currNum != netNum){
-            alert('ios升级');
-             this.openUrlByBrowser(this.downUrl);
-          }
+          this.alertCtrl.create({
+            title: '升级',
+            subTitle: '发现新版本,是否立即升级？',
+            buttons: [{ text: '取消' },
+            {
+              text: '确定',
+              handler: () => {
+                netNum = this.listData['Ios']['Version'];
+                this.downUrl = this.listData['Ios']['DownUrl'];
+                if (currNum != netNum){
+                   this.openUrlByBrowser(this.downUrl);
+                }
+              }
+            }
+            ]
+          }).present();    
+
            
         }
         return value;
       });
     });
   }
+
+
 
   /**
    * 下载安装app
