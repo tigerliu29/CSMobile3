@@ -60,8 +60,12 @@ export class NativeService {
         } else if (this.isIos()) {
           netNum = this.listData['Ios']['Version'];
           this.downUrl = this.listData['Ios']['DownUrl'];
-          if (currNum != netNum)
-            this.openUrlByBrowser(this.downUrl);
+          alert(netNum+"_"+ this.downUrl);
+          if (currNum != netNum){
+            alert('ios升级');
+             this.openUrlByBrowser(this.downUrl);
+          }
+           
         }
         return value;
       });
